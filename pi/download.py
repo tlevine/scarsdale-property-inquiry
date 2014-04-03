@@ -7,7 +7,7 @@ import pi.cache
 def parse_session(response):
     html = fromstring(response.text)
 
-    publickeytoken = unquote(html.xpath('//script[contains(@src, "PublicKeyToken")]/@src')[0].split('PublicKeyToken')[-1])
+    publickeytoken = unquote(html.xpath('//script[contains(@src, "PublicKeyToken")]/@src')[0].split('PublicKeyToken=')[-1])
     viewstate = html.xpath('id("__VIEWSTATE")/@value')[0]
     eventvalidation = html.xpath('id("__EVENTVALIDATION")/@value')[0]
     return response.cookies, publickeytoken, viewstate, eventvalidation
@@ -38,4 +38,4 @@ def house(session, house_id):
     'house_id -> house_data:dict'
     response = pi.cache.house(session, house_id)
     html = fromstring(response.text)
-    open('/tmp/a','w').write(response.text)
+    open('/tmp/a.html','w').write(response.text)
