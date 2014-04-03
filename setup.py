@@ -8,7 +8,7 @@ setup(name='scarsdale-property-inquiry',
     classifiers=[
         'Intended Audience :: Developers',
     ],
-    packages=['pi'],
+    packages=['scarsdale_property_inquiry'],
     scripts=['bin/scarsdale-property-inquiry'],
     install_requires = ['requests','randua','lxml','pickle_warehouse'],
   # tests_require = ['nose'],
