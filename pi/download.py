@@ -1,8 +1,10 @@
 from lxml.html import fromstring
 
+import pi.cache
+
 def home():
     '() -> [street_id:str]'
-    response = cache.home()
+    response = pi.cache.home()
     html = fromstring(response.text)
 
 def street():
