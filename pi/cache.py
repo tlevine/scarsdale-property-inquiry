@@ -14,12 +14,13 @@ def home():
         warehouse['home'] = response
     return response
 
-def street(street_id):
+def street(publickeytoken, viewstate, eventvalidation, street_id):
     key = ('street', street_id)
     if key in warehouse:
         response = warehouse[key]
     else:
-        response = requests.post(p.url, headers = p.headers(ua()))
+        data = p.data(publickeytoken, viewstate, eventvalidation, 'something', street_id)
+        response = requests.post(p.url, headers = p.headers(ua()), data = data)
         warehouse[key] = response
     return response
 
@@ -28,6 +29,7 @@ def house(house_id):
     if key in warehouse:
         response = warehouse[key]
     else:
-        response = requests.post(p.url, headers = p.headers(ua()))
+        data = p.data(publickeytoken, viewstate, eventvalidation, 'something', house_id)
+        response = requests.post(p.url, headers = p.headers(ua()), data = data)
         warehouse[key] = response
     return response
