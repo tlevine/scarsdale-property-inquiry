@@ -1,6 +1,9 @@
+from lxml.html import fromstring
+
 def home():
     '() -> [street_id:str]'
-    yield
+    response = cache.home()
+    html = fromstring(response.text)
 
 def street():
     'street_id -> [house_id:str]'
