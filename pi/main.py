@@ -3,9 +3,13 @@ import functools
 
 import pi.download as dl
 
-_dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/scarsdale-property-inquiry/info')
+def get_dir():
+    _dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/scarsdale-property-inquiry/info')
+    if not os.path.exists(_dir):
+        os.makedirs(_dir)
 
 def main():
+    _dir = get_dir()
     session, street_ids = dl.home()
     street = functools.partial(dl.street, session)
     for street_id in street_ids:
