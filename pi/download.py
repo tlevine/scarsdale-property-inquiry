@@ -37,5 +37,5 @@ def street(session, street_id):
 def house(session, house_id):
     'house_id -> house_data:dict'
     response = pi.cache.house(session, house_id)
-    html = fromstring(response.text)
-    open('/tmp/a.html','w').write(response.text)
+    # html = fromstring(response.text)
+    return response.text
