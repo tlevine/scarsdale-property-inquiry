@@ -17,22 +17,18 @@ def home():
         _warehouse['home'] = response
     return response
 
-def street(publickeytoken, viewstate, eventvalidation, street_id):
-    key = ('street', street_id)
-    if key in _warehouse:
-        response = _warehouse[key]
-    else:
-        data = p.data(publickeytoken, viewstate, eventvalidation, 'something', street_id)
-        response = requests.post(p.url(), headers = p.headers(ua()), data = data)
-        _warehouse[key] = response
-    return response
+def _post(section_name, eventtarget):
+    def f(session, _id):
+        key = (section_name, _id)
+        if key in _warehouse:
+            response = _warehouse[key]
+        else:
+            cookies, publickeytoken, viewstate, eventvalidation = session
+            data = p.data(publickeytoken, viewstate, eventvalidation, eventtarget, _id)
+            response = requests.post(p.url(), headers = p.headers(ua()), data = data, cookies = cookies)
+            _warehouse[key] = response
+        return response
+    return f
 
-def house(house_id):
-    key = ('house', house_id)
-    if key in _warehouse:
-        response = _warehouse[key]
-    else:
-        data = p.data(publickeytoken, viewstate, eventvalidation, 'something', house_id)
-        response = requests.post(p.url(), headers = p.headers(ua()), data = data)
-        _warehouse[key] = response
-    return response
+street = _post('street', 'dnn$ctr1381$ViewPIRPS$lstboxStreets')
+house  = _post('house',  'dnn$ctr1381$ViewPIRPS$lstboxAddresses')
