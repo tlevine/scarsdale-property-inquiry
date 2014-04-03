@@ -7,21 +7,21 @@ def headers():
         'Referer': url,
     }
 
-def data():
+def data(publickeytoken, viewstate, eventvalidation):
     return {
         'StylesheetManager_TSSM': '',
-        'ScriptManager_TSM': ';;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35:en:eb198dbd-2212-44f6-bb15-882bde414f00:ea597d4b:b25378d2',
+        'ScriptManager_TSM': ';;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=' + publickeytoken,
         '__EVENTTARGET': 'dnn$ctr1381$ViewPIRPS$lstboxAddresses',
         '__EVENTARGUMENT': '',
         '__LASTFOCUS': '',
-        '__VIEWSTATE': __viewstate,
-        '__EVENTVALIDATION': __eventvalidation,
+        '__VIEWSTATE': viewstate,
+        '__EVENTVALIDATION': eventvalidation,
         'dnn$SEARCH1$Search': 'SiteRadioButton',
         'dnn$SEARCH1$txtSearch': '',
        #'dnn$ctr1381$ViewPIRPS$lst...': '19.03.287',
         'dnn$ctr1381$ViewPIRPS$lstboxAddresses': '19.03.287',
         'dnn$dnnSEARCH$Search': 'SiteRadioButton',
         'dnn$dnnSEARCH$txtSearch': '',
-        'ScrollTop': 228,
+        'ScrollTop': 228, # how far the page is scrolled
         '__dnnVariable': '{"__scdoff":"1"}',
     }
