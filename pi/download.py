@@ -37,5 +37,6 @@ def street(session, street_id):
 def house(session, house_id):
     'house_id -> house_data:dict'
     response = pi.cache.house(session, house_id)
-    # html = fromstring(response.text)
-    return response.text
+    html = fromstring(response.text)
+    property_number = html.xpath('id("dnn_ctr1381_ViewPIRPS_lblProperty")/text()')[0]
+    return property_number, response.text
