@@ -3,6 +3,7 @@ import os
 import requests
 from randua import generate as ua
 from pickle_warehouse import Warehouse
+from randomsleep import randomsleep
 
 import scarsdale_property_inquiry.params as p
 
@@ -13,6 +14,7 @@ def home():
     if 'home' in _warehouse:
         response = _warehouse['home']
     else:
+        randomsleep()
         response = requests.get(p.url(), headers = p.headers(ua()))
         _warehouse['home'] = response
     return response
@@ -25,6 +27,7 @@ def _post(section_name, eventtarget):
         else:
             cookies, publickeytoken, viewstate, eventvalidation = session
             data = p.data(publickeytoken, viewstate, eventvalidation, eventtarget, _id)
+            randomsleep()
             response = requests.post(p.url(), headers = p.headers(ua()), data = data, cookies = cookies)
             _warehouse[key] = response
         return response
