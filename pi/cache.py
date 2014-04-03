@@ -9,29 +9,29 @@ _dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/scarsdale-property-i
 _warehouse = Warehouse(_dir)
 
 def home():
-    if 'home' in warehouse:
-        response = warehouse['home']
+    if 'home' in _warehouse:
+        response = _warehouse['home']
     else:
         response = requests.get(p.url, headers = ua())
-        warehouse['home'] = response
+        _warehouse['home'] = response
     return response
 
 def street(publickeytoken, viewstate, eventvalidation, street_id):
     key = ('street', street_id)
-    if key in warehouse:
-        response = warehouse[key]
+    if key in _warehouse:
+        response = _warehouse[key]
     else:
         data = p.data(publickeytoken, viewstate, eventvalidation, 'something', street_id)
         response = requests.post(p.url, headers = p.headers(ua()), data = data)
-        warehouse[key] = response
+        _warehouse[key] = response
     return response
 
 def house(house_id):
     key = ('house', house_id)
-    if key in warehouse:
-        response = warehouse[key]
+    if key in _warehouse:
+        response = _warehouse[key]
     else:
         data = p.data(publickeytoken, viewstate, eventvalidation, 'something', house_id)
         response = requests.post(p.url, headers = p.headers(ua()), data = data)
-        warehouse[key] = response
+        _warehouse[key] = response
     return response
