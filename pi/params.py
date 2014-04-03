@@ -1,9 +1,10 @@
-url = 'http://www.scarsdale.com/Home/Departments/InformationTechnology/PropertyInquiry.aspx'
+def url():
+    return 'http://www.scarsdale.com/Home/Departments/InformationTechnology/PropertyInquiry.aspx'
 
 def headers():
     return {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:27.0) Gecko/20100101 Firefox/27.0',
-        'Referer': url,
+        'Referer': url(),
     }
 
 def data(publickeytoken, viewstate, eventvalidation, eventtarget, value):
