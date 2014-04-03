@@ -4,7 +4,7 @@ import requests
 from randua import generate as ua
 from pickle_warehouse import Warehouse
 
-import pi.params as p
+import scarsdale_property_inquiry.params as p
 
 _dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/scarsdale-property-inquiry/requests')
 _warehouse = Warehouse(_dir)

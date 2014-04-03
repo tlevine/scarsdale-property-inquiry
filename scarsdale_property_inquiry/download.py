@@ -2,7 +2,7 @@ from urllib.parse import unquote
 
 from lxml.html import fromstring
 
-import pi.cache
+import scarsdale_property_inquiry.cache
 
 def parse_session(response):
     html = fromstring(response.text)
@@ -14,7 +14,7 @@ def parse_session(response):
 
 def home():
     '() -> [street_id:str]'
-    response = pi.cache.home()
+    response = scarsdale_property_inquiry.cache.home()
     html = fromstring(response.text)
 
     session = parse_session(response)
@@ -25,7 +25,7 @@ def home():
 
 def street(session, street_id):
     'street_id -> [house_id:str]'
-    response = pi.cache.street(session, street_id)
+    response = scarsdale_property_inquiry.cache.street(session, street_id)
     html = fromstring(response.text)
 
     session = parse_session(response)
@@ -36,5 +36,5 @@ def street(session, street_id):
 
 def house(session, house_id):
     'house_id -> house_data:dict'
-    response = pi.cache.house(session, house_id)
+    response = scarsdale_property_inquiry.cache.house(session, house_id)
     return response.text

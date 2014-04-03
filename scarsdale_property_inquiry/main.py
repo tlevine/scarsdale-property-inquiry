@@ -1,7 +1,7 @@
 import os
 import functools
 
-import pi.download as dl
+import scarsdale_property_inquiry.download as dl
 
 def get_dir():
     _dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/scarsdale-property-inquiry/info')
