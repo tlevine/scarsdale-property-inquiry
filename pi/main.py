@@ -7,6 +7,7 @@ def get_dir():
     _dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/scarsdale-property-inquiry/info')
     if not os.path.exists(_dir):
         os.makedirs(_dir)
+    return _dir
 
 def main():
     _dir = get_dir()
