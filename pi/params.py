@@ -1,9 +1,9 @@
 def url():
     return 'http://www.scarsdale.com/Home/Departments/InformationTechnology/PropertyInquiry.aspx'
 
-def headers():
+def headers(user_agent):
     return {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:27.0) Gecko/20100101 Firefox/27.0',
+        'User-Agent': user_agent,
         'Referer': url(),
     }
 
