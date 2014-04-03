@@ -1,5 +1,6 @@
 import os
 
+import requests
 from randua import generate as ua
 from pickle_warehouse import Warehouse
 
