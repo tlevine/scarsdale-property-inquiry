@@ -12,6 +12,6 @@ def main():
         session, house_ids = street(street_id)
         house = functools.partial(dl.house, session)
         for house_id in house_ids:
-            property_number, text = house(house_id)
-            with open(os.path.join(_dir, property_number + '.html'), 'w') as fp:
+            text = house(house_id)
+            with open(os.path.join(_dir, house_id + '.html'), 'w') as fp:
                 fp.write(text)
