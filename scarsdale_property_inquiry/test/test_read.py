@@ -5,7 +5,7 @@ import scarsdale_property_inquiry.read as read
 import scarsdale_property_inquiry.test.fixtures.read as fixtures
 
 def check(function_name, expected):
-    html = lxml.html.fromstring(getattr(fixtures, expectation))
+    html = lxml.html.fromstring(getattr(fixtures, function_name))
     observed = getattr(read, function_name)(html)
     n.assert_dict_equal(observed, expected)
 
