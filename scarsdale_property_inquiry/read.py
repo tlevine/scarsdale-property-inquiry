@@ -39,7 +39,7 @@ def assessment_information(table):
     ]}
     
     excemption_keys = matrix[11][:3]
-    excemptions = [OrderedDict(excemption_keys, row[:3]) for row in matrix[12:]]
+    excemptions = [OrderedDict(zip(excemption_keys, row[:3])) for row in matrix[12:]]
 
     results = {}
     results.update(av)
