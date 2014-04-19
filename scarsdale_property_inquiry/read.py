@@ -39,12 +39,12 @@ def assessment_information(table):
     ]}
     
     excemption_keys = matrix[11][:3]
-    excemptions = [OrderedDict(zip(excemption_keys, row[:3])) for row in matrix[12:]]
+    excemptions = [OrderedDict(zip(excemption_keys, row[:3])) for row in matrix[12:] if row[0] != '']
 
     results = {}
     results.update(av)
     results.update(taxable_values)
-    results.update(excemptions)
+    results['excemptions'] = excemptions
     return results
 
 building_information = two_column_table
