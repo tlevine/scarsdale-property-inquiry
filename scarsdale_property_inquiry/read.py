@@ -12,6 +12,8 @@ def info(text):
     tables = html.xpath('id("dnn_ctr1381_ViewPIRPS_Panel1")/table')
     return {func.__name__: func(table) for func, table in zip(funcs, tables)}
 
+
+
 def two_column_table(table):
     tds = table.xpath('descendant::td[not(@style)]')
     text_contents = [td.text_content() for td in tds]
@@ -21,7 +23,7 @@ def two_column_table(table):
     return OrderedDict(zip(keys, values))
 
 def property_information(table):
-    return two_column_table
+    return two_column_table(table)
 
 def assessment_information(table):
     matrix = [[td.text_content().replace('\xa0','') for td in tr.xpath('td')] for tr in table.xpath('tr')]

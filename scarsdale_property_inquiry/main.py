@@ -43,6 +43,9 @@ def table():
             for key, value in list(flatrow.items()):
                 if isinstance(value, list):
                     del(flatrow[key])
+            if 'Lot Area' in flatrow:
+                flatrow['acreage'] = float(flatrow['Lot Area'].split(' ')[0])
+                del(flatrow['Lot Area'])
             yield flatrow
 
 def main():
