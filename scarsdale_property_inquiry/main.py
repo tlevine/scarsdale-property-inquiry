@@ -24,7 +24,7 @@ def html():
             with open(os.path.join(_dir, house_id + '.html'), 'w') as fp:
                 fp.write(text)
 
-def tables():
+def table():
     session, street_ids = dl.home()
     street = functools.partial(dl.street, session)
     for street_id in street_ids:
@@ -34,5 +34,5 @@ def tables():
             yield read.info(future.result())
 
 def main():
-    for table in tables():
-        print(table)
+    for row in table():
+        print(row)
