@@ -32,3 +32,7 @@ def tables():
         house = functools.partial(dl.house, session)
         for future in jumble(house, house_ids):
             yield read.info(future.result())
+
+def main():
+    for table in tables():
+        print(table)
