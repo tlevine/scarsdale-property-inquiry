@@ -91,8 +91,15 @@ XXX reference the assessor's manual.
 
 Tax information
 ~~~~~~~~~~~~~~~~~~~~~~~
+This section tells us how much was paid in taxes since 2012.
+Note that the county tax that was due on April 30, 2014 uses
+the old (2013) assessment rather than the new (preliminary 2014) one.
+
 .. image:: 54-walworth/tax-information.png
+
 Permits
 ~~~~~~~~~~~~~~~~~~~~~~~
+This section shows us all of the building permits since the beginning
+of time. This is a fun way to see when and how buildings were renovated.
 
 .. image:: 54-walworth/permits.png
