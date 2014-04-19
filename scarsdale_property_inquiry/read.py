@@ -12,6 +12,19 @@ def info(text):
     tables = html.xpath('id("dnn_ctr1381_ViewPIRPS_Panel1")/table')
     return {func.__name__: func(table) for func, table in zip(funcs, tables)}
 
+def flatten(row):
+    if row != {}:
+        flatrow = {}
+        for value in row.values():
+            if isinstance(value, dict):
+                flatrow.update(value)
+        for key, value in list(flatrow.items()):
+            if isinstance(value, list):
+                del(flatrow[key])
+        if 'Lot Area' in flatrow:
+            flatrow['acreage'] = float(flatrow['Lot Area'].split(' ')[0])
+            del(flatrow['Lot Area'])
+        yield {key.lower().replace(' ','_'): value for key, value in flatrow.items()}
 
 
 def two_column_table(table):
