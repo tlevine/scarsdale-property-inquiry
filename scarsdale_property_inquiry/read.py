@@ -20,7 +20,8 @@ def two_column_table(table):
     # I could read lot area as an acreage.
     return OrderedDict(zip(keys, values))
 
-property_information = two_column_table
+def property_information(table):
+    return two_column_table
 
 def assessment_information(table):
     matrix = [[td.text_content().replace('\xa0','') for td in tr.xpath('td')] for tr in table.xpath('tr')]
@@ -55,7 +56,8 @@ def assessment_information(table):
     results['excemptions'] = excemptions
     return results
 
-building_information = two_column_table
+def building_information(table):
+    return two_column_table
 
 def structure_information(table):
     return table.xpath('descendant::td[not(@style)]/text()')
