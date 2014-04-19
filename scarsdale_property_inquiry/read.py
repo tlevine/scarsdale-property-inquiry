@@ -4,7 +4,7 @@ def info(text):
     html = lxml.html.fromstring(text)
 
 def property_information(table):
-    return table.xpath('descendant::td')
+    return table.xpath('descendant::td[not(@style)]')
 
 def assessment_information(table):
    return {}
