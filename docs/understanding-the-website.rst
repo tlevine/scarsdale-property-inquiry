@@ -103,3 +103,11 @@ This section shows us all of the building permits since the beginning
 of time. This is a fun way to see when and how buildings were renovated.
 
 .. image:: 54-walworth/permits.png
+
+Getting this for all the properties
+------------------------------------
+I've already downloaded the information for pretty much all of the
+properties in the village. I haven't really explained how I did it,
+but if you know what you're doing, you can get spreadsheets of all
+the information with
+`this program <https://pypi.python.org/pypi/scarsdale-property-inquiry>`_.
