@@ -18,8 +18,8 @@ def assessment_information(table):
     matrix = [[td.text_content() for td in tr.xpath('td')] for tr in table.xpath('tr')]
     print(matrix[3])
     print(matrix[4])
-    print(matrix[5])
-    print(matrix[6])
+    print(matrix[7])
+    print(matrix[8])
 
 building_information = two_column_table
 
