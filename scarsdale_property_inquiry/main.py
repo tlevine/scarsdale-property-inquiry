@@ -35,4 +35,6 @@ def table():
 
 def main():
     for row in table():
-        print(row)
+        if row != {}:
+            print(row)
+            break
