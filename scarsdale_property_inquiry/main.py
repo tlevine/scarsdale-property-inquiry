@@ -4,7 +4,7 @@ import functools
 import scarsdale_property_inquiry.download as dl
 
 def get_dir():
-    _dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/scarsdale-property-inquiry/info')
+    _dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/big/scarsdale-property-inquiry/info')
     if not os.path.exists(_dir):
         os.makedirs(_dir)
     return _dir

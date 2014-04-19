@@ -7,7 +7,7 @@ from randomsleep import randomsleep
 
 import scarsdale_property_inquiry.params as p
 
-_dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/scarsdale-property-inquiry/requests')
+_dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/big/scarsdale-property-inquiry/requests')
 _warehouse = Warehouse(_dir)
 
 def home():
