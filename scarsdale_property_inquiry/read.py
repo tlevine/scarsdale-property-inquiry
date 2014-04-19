@@ -24,7 +24,7 @@ def flatten(row):
         if 'Lot Area' in flatrow:
             flatrow['acreage'] = float(flatrow['Lot Area'].split(' ')[0])
             del(flatrow['Lot Area'])
-        yield {key.lower().replace(' ','_'): value for key, value in flatrow.items()}
+        return {key.lower().replace(' ','_'): value for key, value in flatrow.items()}
 
 
 def two_column_table(table):

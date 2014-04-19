@@ -33,21 +33,6 @@ def parse():
         for future in jumble(house, house_ids):
             yield read.info(future.result())
 
-def table():
-    for row in parse():
-        if row != {}:
-            flatrow = {}
-            for value in row.values():
-                if isinstance(value, dict):
-                    flatrow.update(value)
-            for key, value in list(flatrow.items()):
-                if isinstance(value, list):
-                    del(flatrow[key])
-            if 'Lot Area' in flatrow:
-                flatrow['acreage'] = float(flatrow['Lot Area'].split(' ')[0])
-                del(flatrow['Lot Area'])
-            yield flatrow
-
 def main():
-    for row in table():
-        print(row)
+    for row in parse():
+        print(read.flatten(row))
