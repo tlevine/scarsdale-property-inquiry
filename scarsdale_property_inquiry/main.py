@@ -9,7 +9,7 @@ def get_dir():
         os.makedirs(_dir)
     return _dir
 
-def main():
+def html():
     _dir = get_dir()
     session, street_ids = dl.home()
     street = functools.partial(dl.street, session)
