@@ -97,12 +97,17 @@ the old (2013) assessment rather than the new (preliminary 2014) one.
 
 .. image:: 54-walworth/tax-information.png
 
+The grey lines that contain no description nor due date are
+yearly totals.
+
 Permits
 ~~~~~~~~~~~~~~~~~~~~~~~
 This section shows us all of the building permits since the beginning
 of time. This is a fun way to see when and how buildings were renovated.
 
 .. image:: 54-walworth/permits.png
+
+I don't know what "CO" stands for.
 
 Getting this for all the properties
 ------------------------------------
