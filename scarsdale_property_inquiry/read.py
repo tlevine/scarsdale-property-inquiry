@@ -15,7 +15,11 @@ def two_column_table(table):
 property_information = two_column_table
 
 def assessment_information(table):
-    return {}
+    matrix = [[td.text_content() for td in tr.xpath('td')] for tr in table.xpath('tr')]
+    print(matrix[3])
+    print(matrix[4])
+    print(matrix[5])
+    print(matrix[6])
 
 building_information = two_column_table
 

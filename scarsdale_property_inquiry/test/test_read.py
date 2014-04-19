@@ -14,9 +14,9 @@ def check(function_name, expected):
     assertion(observed, expected)
 
 def test_sections():
-    yield check, 'property_information', {}
+#   yield check, 'property_information', {}
     yield check, 'assessment_information', {}
-    yield check, 'building_information', {}
-    yield check, 'structure_information', []
-    yield check, 'tax_information', []
-    yield check, 'permits', []
+#   yield check, 'building_information', {}
+#   yield check, 'structure_information', []
+#   yield check, 'tax_information', []
+#   yield check, 'permits', []
