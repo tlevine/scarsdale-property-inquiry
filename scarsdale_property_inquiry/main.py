@@ -30,5 +30,5 @@ def tables():
     for street_id in street_ids:
         session, house_ids = street(street_id)
         house = functools.partial(dl.house, session)
-        for text in jumble(house, house_ids):
-            yield read.info(text)
+        for future in jumble(house, house_ids):
+            yield read.info(future.result())
