@@ -3,6 +3,14 @@ from lxml.html import fromstring
 
 def info(text):
     html = fromstring(text)
+    output = {}
+    funcs = [
+        property_information, assessment_information,
+        building_information, structure_information,
+        tax_information, permits,
+    ]
+    tables = html.xpath('id("dnn_ctr1381_ViewPIRPS_Panel1" style="width:100%;")/table')
+    return {func.__name__: func(table) for func, table in zip(funcs, tables)}
 
 def two_column_table(table):
     tds = table.xpath('descendant::td[not(@style)]')
