@@ -40,8 +40,11 @@ def table():
             for value in row.values():
                 if isinstance(value, dict):
                     flatrow.update(value)
+            for key, value in list(flatrow.items()):
+                if isinstance(value, list):
+                    del(flatrow[key])
             yield flatrow
 
 def main():
-    for row in table:
+    for row in table():
         print(row)
