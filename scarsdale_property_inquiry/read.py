@@ -15,11 +15,37 @@ def two_column_table(table):
 property_information = two_column_table
 
 def assessment_information(table):
-    matrix = [[td.text_content() for td in tr.xpath('td')] for tr in table.xpath('tr')]
-    print(matrix[3])
-    print(matrix[4])
-    print(matrix[7])
-    print(matrix[8])
+    matrix = [[td.text_content().replace('\xa0','') for td in tr.xpath('td')] for tr in table.xpath('tr')]
+    def to_int(comma):
+        return int(comma.replace(',',''))
+
+    av_land = list(map(to_int, matrix[3][1:4]))
+    av_total = list(map(to_int, matrix[4][1:4]))
+    av = {
+        'av_land_2014': av_land[0],
+        'av_land_2013_fmv': av_land[1],
+        'av_land_2013': av_land[2],
+        'av_total_2014': av_total[0],
+        'av_total_2013_fmv': av_total[1],
+        'av_total_2013': av_total[2],
+    }
+    
+    taxable_values = {'taxable_' + key.lower().rstrip(':'):to_int(value) for key, value in [
+        matrix[7][:2],
+        matrix[7][-2:],
+        matrix[8][:2],
+        matrix[8][-2:],
+        matrix[9][:2],
+    ]}
+    
+    excemption_keys = matrix[11][:3]
+    excemptions = [OrderedDict(excemption_keys, row[:3]) for row in matrix[12:]]
+
+    results = {}
+    results.update(av)
+    results.update(taxable_values)
+    results.update(excemptions)
+    return results
 
 building_information = two_column_table
 
