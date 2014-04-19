@@ -15,7 +15,7 @@ def two_column_table(table):
 property_information = two_column_table
 
 def assessment_information(table):
-    return table.xpath
+    return table.xpath('a')
 
 building_information = two_column_table
 
@@ -23,7 +23,9 @@ def structure_information(table):
     return table.xpath('descendant::td[not(@style)]/text()')
 
 def tax_information(table):
-    return {}
+    trs = table.xpath('tr[not(td[@style] or td[@colspan])]')
+    keys = table.xpath('tr[position()=2]/td/text()')
+    return [OrderedDict(keys, tr.xpath('td/text()')) for tr in trs]
 
 def permits(table):
-    return {}
+    return []
