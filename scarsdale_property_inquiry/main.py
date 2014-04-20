@@ -39,5 +39,9 @@ def main():
             bumpy_row = read.info(text)
             if bumpy_row != None:
                 flat_row = read.flatten(bumpy_row)
-                if flat_row != None:
-                    table.upsert(flat_row, ['property_number'])
+                if flat_row != None and 'property_number' in flat_row:
+                    try:
+                        table.upsert(flat_row, ['property_number'])
+                    except:
+                        print(flat_row)
+                        raise
