@@ -12,9 +12,9 @@ def parse_session(response):
     eventvalidation = html.xpath('id("__EVENTVALIDATION")/@value')[0]
     return response.cookies, publickeytoken, viewstate, eventvalidation
 
-def home():
+def home(warehouse):
     '() -> [street_id:str]'
-    response = scarsdale_property_inquiry.cache.home()
+    response = scarsdale_property_inquiry.cache.home(warehouse)
     html = fromstring(response.text)
 
     session = parse_session(response)
@@ -23,9 +23,9 @@ def home():
 
     return session, street_ids
 
-def street(session, street_id):
+def street(warehouse, session, street_id):
     'street_id -> [house_id:str]'
-    response = scarsdale_property_inquiry.cache.street(session, street_id)
+    response = scarsdale_property_inquiry.cache.street(warehouse, session, street_id)
     html = fromstring(response.text)
 
     session = parse_session(response)
@@ -34,7 +34,7 @@ def street(session, street_id):
 
     return session, house_ids
 
-def house(session, house_id):
+def house(warehouse, session, house_id):
     'house_id -> house_data:dict'
-    response = scarsdale_property_inquiry.cache.house(session, house_id)
+    response = scarsdale_property_inquiry.cache.house(warehouse, session, house_id)
     return response.text
