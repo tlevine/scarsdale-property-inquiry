@@ -1,33 +1,46 @@
 CREATE TABLE properties (
+
+  -- Property Information
   property_number TEXT,
-  school_district TEXT,
   curr_owner TEXT,
   wetlands TEXT,
-  nbhd_cd TEXT,
   address TEXT,
+  school_district TEXT,
+  property_class TEXT,
   site_no TEXT,
+  nbhd_cd TEXT,
   acreage FLOAT,
   zoning TEXT,
-  property_class TEXT,
 
-  -- Assessment information
-  av_land_2014 INTEGER,
-  av_land_2013_fmv INTEGER,
-  av_land_2013 INTEGER,
-  av_total_2014 INTEGER,
-  av_total_2013_fmv INTEGER,
-  av_total_2013 INTEGER,
+  -- Assessment Information
+    -- Assessed Value
+    assessed_land_2014 INTEGER,
+    assessed_land_2013_fmv INTEGER,
+    assessed_land_2013 INTEGER,
+    assessed_total_2014 INTEGER,
+    assessed_total_2013_fmv INTEGER,
+    assessed_total_2013 INTEGER,
 
-  taxable_village INTEGER,
-  taxable_school INTEGER,
-  taxable_county INTEGER, -- uh-oh
-  taxable_county_solid_waste INTEGER, -- uh-oh
-  taxable_bronx_sewer INTEGER,
-  taxable_mamaroneck_sewer INTEGER,
-  taxable_hutchinson_sewer INTEGER,
-  taxable_ TEXT, -- uh-oh
+    -- Taxable Value
+    taxable_village INTEGER,
+    taxable_school INTEGER,
+    taxable_county INTEGER,
 
-  -- Structural information
+    -- Special Districts
+    taxable_bronx_sewer INTEGER,
+    taxable_mamaroneck_sewer INTEGER,
+    taxable_hutchinson_sewer INTEGER,
+    taxable_county_solid_waste INTEGER,
+
+    -- Huh?
+    taxable_ TEXT,
+
+    -- Excemptions are in a separate table for now.
+
+  -- Building information
+  -- Where is this?
+
+  -- Structure information
   ap1 BOOLEAN DEFAULT 0,
   ap3 BOOLEAN DEFAULT 0,
   ap4 BOOLEAN DEFAULT 0,
@@ -114,6 +127,9 @@ CREATE TABLE properties (
   tk1 BOOLEAN DEFAULT 0,
   tk4 BOOLEAN DEFAULT 0,
   tk6 BOOLEAN DEFAULT 0,
+
+  -- Tax information is in a separate table.
+  -- Permits is in a separate table.
  
   UNIQUE(property_number)
 );
