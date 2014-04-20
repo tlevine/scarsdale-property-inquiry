@@ -1,4 +1,5 @@
 import warnings
+from operator import add
 from collections import OrderedDict
 
 from lxml.html import fromstring
@@ -70,22 +71,25 @@ def assessment_information(table):
         'assessed_total_2013': av_total[2],
     }
     
-    taxable_values = {'taxable_' + key.lower().rstrip(':'):to_int(value) for key, value in [
+    taxable_value = {'taxable_' + key.lower().rstrip(':'):to_int(value) for key, value in [
         matrix[7][:2],
         matrix[7][-2:],
         matrix[8][:2],
+    ]}
+    special_district_pairs = [
         matrix[8][-2:],
         matrix[9][:2],
-    ]}
-    if 'taxable_' in taxable_values:
-        del(taxable_values['taxable_'])
+    ]
+    if set(add(*special_district_pairs)) != {''}:
+        special_districts = {'taxable_' + key.lower().rstrip(':'):to_int(value) for key, value in special_district_pairs}
+        taxable_value.update(special_districts)
     
     excemption_keys = matrix[11][:3]
     excemptions = [OrderedDict(zip(excemption_keys, row[:3])) for row in matrix[12:] if row[0] != '']
 
     results = {}
     results.update(av)
-    results.update(taxable_values)
+    results.update(taxable_value)
     results['excemptions'] = excemptions
     return results
 
