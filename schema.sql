@@ -32,9 +32,6 @@ CREATE TABLE properties (
     taxable_hutchinson_sewer INTEGER,
     taxable_county_solid_waste INTEGER,
 
-    -- Huh?
-    taxable_ TEXT,
-
     -- Excemptions are in a separate table for now.
 
   -- Building information
@@ -45,8 +42,8 @@ CREATE TABLE properties (
   fireplaces TEXT,
   central_air TEXT,
   living_area TEXT,
-  "no._stories" TEXT,
-  "half-bathrooms" TEXT,
+  no_stories TEXT,
+  half_bathrooms TEXT,
   bath_qual TEXT,
   overall_cond TEXT,
   bsmt_type TEXT,
