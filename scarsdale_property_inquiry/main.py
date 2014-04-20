@@ -36,6 +36,10 @@ def main():
         house = functools.partial(dl.house, session)
         for future in jumble(house, house_ids):
             text = future.result()
-            row = read.flatten(read.info(text))
-            if row != None:
-                table.upsert(row, ['property_number'])
+            try:
+                row = read.flatten(read.info(text))
+            except Exception as e:
+                print(street_id, e)
+            else:
+                if row != None:
+                    table.upsert(row, ['property_number'])
