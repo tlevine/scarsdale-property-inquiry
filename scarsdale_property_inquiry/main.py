@@ -36,7 +36,12 @@ def main():
         house = functools.partial(dl.house, session)
         for future in jumble(house, house_ids):
             text = future.result()
-            bumpy_row = read.info(text)
+            try:
+                bumpy_row = read.info(text)
+            except:
+                open('/tmp/a.html','w').write(text)
+                raise
+
             if bumpy_row != None:
                 flat_row = read.flatten(bumpy_row)
                 if flat_row != None and 'property_number' in flat_row:
