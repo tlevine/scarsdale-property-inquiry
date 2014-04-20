@@ -54,10 +54,7 @@ def assessment_information(table):
     matrix = [[td.text_content().replace('\xa0','') for td in tr.xpath('td')] for tr in table.xpath('tr')]
     def to_int(comma):
         nocomma = comma.replace(',','')
-        if nocomma == '':
-            warnings.warn('Missing a number in the assessment information for %s' % table.xpath('id("dnn_ctr1381_ViewPIRPS_lblProperty")/text()'))
-            return ''
-        else:
+        if nocomma != '':
             return int(nocomma)
 
     av_land = list(map(to_int, matrix[3][1:4]))
