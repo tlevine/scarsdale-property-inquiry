@@ -36,11 +36,8 @@ def main():
         house = functools.partial(dl.house, session)
         for future in jumble(house, house_ids):
             text = future.result()
-            try:
-                row = read.flatten(read.info(text))
-            except:
-                open('/tmp/a.html', 'w').write(text)
-                raise
-            else:
-                if row != None:
-                    table.upsert(row, ['property_number'])
+            bumpy_row = read.info(text)
+            if bumpy_row != None:
+                flat_row = read.flatten(bumpy_row)
+                if flat_row != None:
+                    table.upsert(flat_row, ['property_number'])
