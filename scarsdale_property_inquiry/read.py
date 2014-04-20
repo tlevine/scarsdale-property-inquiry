@@ -13,7 +13,7 @@ def info(text):
     elif int(html.xpath('count(id("dnn_ctr1381_ViewPIRPS_lblOwner")/text())')) == 0:
         open('/tmp/a.html', 'w').write(text)
         # Weird property
-        return {'property_number': str(html.xpath('id("dnn_ctr1381_ViewPIRPS_lblProperty")/text()')[0])}
+        return {'property_information':{'property_number': str(html.xpath('id("dnn_ctr1381_ViewPIRPS_lblProperty")/text()')[0])}}
     else:
         output = {}
         funcs = [
