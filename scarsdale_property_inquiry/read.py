@@ -78,7 +78,7 @@ def assessment_information(table):
         matrix[9][:2],
     ]}
     if 'taxable_' in taxable_values:
-        raise ValueError(str(taxable_values))
+        del(taxable_values['taxable_'])
     
     excemption_keys = matrix[11][:3]
     excemptions = [OrderedDict(zip(excemption_keys, row[:3])) for row in matrix[12:] if row[0] != '']
@@ -90,7 +90,25 @@ def assessment_information(table):
     return results
 
 def building_information(table):
-    return two_column_table(table)
+    untyped = two_column_table(table)
+    try:
+        typed = {
+            'Year Built': int(untyped['Year Built']),
+            'Bldg Style': untyped['Bldg Style'],
+            'Bathrooms': int(untyped['Bathrooms']),
+            'Bedrooms': int(untyped['Bedrooms']),
+            'Fireplaces': int(untyped['Fireplaces']),
+            'Central Air': {'Yes':True,'No':False}[untyped['Central Air']],
+            'Living Area': int(untyped['Living Area']),
+            'No Stories': float(untyped['No. Stories']),
+            'Half Bathrooms': int(untyped("Half-Bathrooms")),
+            'Bsmt Type': untyped['Bsmt Type'],
+        }
+    except:
+        print(untyped)
+        raise
+    else:
+        return typed
 
 def structure_information(table):
     keys = table.xpath('descendant::td[not(@style)]/text()')[1:]
