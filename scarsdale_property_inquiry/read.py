@@ -62,12 +62,12 @@ def assessment_information(table):
     av_land = list(map(to_int, matrix[3][1:4]))
     av_total = list(map(to_int, matrix[4][1:4]))
     av = {
-        'av_land_2014': av_land[0],
-        'av_land_2013_fmv': av_land[1],
-        'av_land_2013': av_land[2],
-        'av_total_2014': av_total[0],
-        'av_total_2013_fmv': av_total[1],
-        'av_total_2013': av_total[2],
+        'assessed_land_2014': av_land[0],
+        'assessed_land_2013_fmv': av_land[1],
+        'assessed_land_2013': av_land[2],
+        'assessed_total_2014': av_total[0],
+        'assessed_total_2013_fmv': av_total[1],
+        'assessed_total_2013': av_total[2],
     }
     
     taxable_values = {'taxable_' + key.lower().rstrip(':'):to_int(value) for key, value in [
@@ -77,6 +77,8 @@ def assessment_information(table):
         matrix[8][-2:],
         matrix[9][:2],
     ]}
+    if 'taxable_' in taxable_values:
+        raise ValueError(str(taxable_values))
     
     excemption_keys = matrix[11][:3]
     excemptions = [OrderedDict(zip(excemption_keys, row[:3])) for row in matrix[12:] if row[0] != '']
