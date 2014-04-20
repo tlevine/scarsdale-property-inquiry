@@ -50,7 +50,10 @@ def property_information(table):
 def assessment_information(table):
     matrix = [[td.text_content().replace('\xa0','') for td in tr.xpath('td')] for tr in table.xpath('tr')]
     def to_int(comma):
-        return int(comma.replace(',',''))
+        try:
+            return int(comma.replace(',',''))
+        except:
+            raise ValueError('Missing a number in the assessment information for %s' % table.xpath('id("dnn_ctr1381_ViewPIRPS_lblProperty")/text()'))
 
     av_land = list(map(to_int, matrix[3][1:4]))
     av_total = list(map(to_int, matrix[4][1:4]))
