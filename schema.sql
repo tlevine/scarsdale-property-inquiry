@@ -106,7 +106,6 @@ CREATE TABLE properties (
   rp6 BOOLEAN,
   rp7 BOOLEAN,
   rp8 BOOLEAN,
-  str BOOLEAN, -- Really?
   tc1 BOOLEAN,
   tc2 BOOLEAN,
   tc5 BOOLEAN,
