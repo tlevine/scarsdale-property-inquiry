@@ -14,10 +14,10 @@ def get_fs(root_dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/big/s
     warehouse = Warehouse(os.path.join(root_dir, 'requests'))
     if not os.path.exists(html_dir):
         os.makedirs(html_dir)
-    return html_dir, warehouse
+    return root_dir, html_dir, warehouse
 
 def html():
-    html_dir, _ = get_fs()
+    _, html_dir, _ = get_fs()
     session, street_ids = dl.home()
     street = functools.partial(dl.street, session)
     for street_id in street_ids:
@@ -29,9 +29,9 @@ def html():
                 fp.write(text)
 
 def main():
-    db = dataset.connect('sqlite:////tmp/scarsdale-property-inquiry.db')
+    root_dir, _, warehouse = get_fs()
+    db = dataset.connect('sqlite:///' + os.path.join(root_dir, 'scarsdale-property-inquiry.db'))
     db.query(schema.properties)
-    _, warehouse = get_fs()
     
     session, street_ids = dl.home(warehouse)
     street = functools.partial(dl.street, warehouse, session)

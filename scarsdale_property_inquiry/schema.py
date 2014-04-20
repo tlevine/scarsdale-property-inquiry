@@ -1,5 +1,5 @@
 properties = '''
-CREATE TABLE properties (
+CREATE TABLE IF NOT EXISTS properties (
   -- Property Information
   property_number TEXT,
   curr_owner TEXT,
