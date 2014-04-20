@@ -91,24 +91,22 @@ def assessment_information(table):
 
 def building_information(table):
     untyped = two_column_table(table)
-    try:
-        typed = {
-            'Year Built': int(untyped['Year Built']),
-            'Bldg Style': untyped['Bldg Style'],
-            'Bathrooms': int(untyped['Bathrooms']),
-            'Bedrooms': int(untyped['Bedrooms']),
-            'Fireplaces': int(untyped['Fireplaces']),
-            'Central Air': {'Yes':True,'No':False}[untyped['Central Air']],
-            'Living Area': int(untyped['Living Area']),
-            'No Stories': float(untyped['No. Stories']),
-            'Half Bathrooms': int(untyped("Half-Bathrooms")),
-            'Bsmt Type': untyped['Bsmt Type'],
-        }
-    except:
-        print(untyped)
-        raise
-    else:
-        return typed
+    typed = {
+        'Year Built': untyped['Year Built'],
+        'Bldg Style': untyped['Bldg Style'],
+        'Bathrooms': untyped['Bathrooms'],
+        'Bedrooms': untyped['Bedrooms'],
+        'Fireplaces': untyped['Fireplaces'],
+        'Central Air': {'Yes':True,'No':False}.get(untyped['Central Air']),
+        'Living Area': untyped['Living Area'],
+        'No Stories': untyped['No. Stories'],
+        'Half Bathrooms': untyped["Half-Bathrooms"],
+        'Bsmt Type': untyped['Bsmt Type'],
+    }
+    for int_column in ['Year Built', 'Bathrooms', 'Bedrooms', 'Fireplaces', 'Living Area', 'Half Bathrooms']:
+        typed[int_column] = None if typed[int_column] == '' else int(typed[int_column])
+    typed['No Stories'] = None if typed['No Stories'] == '' else float(typed['No Stories'])
+    return typed
 
 def structure_information(table):
     keys = table.xpath('descendant::td[not(@style)]/text()')[1:]
