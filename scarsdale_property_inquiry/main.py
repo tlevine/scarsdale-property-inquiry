@@ -52,7 +52,7 @@ def getparser(root_dir):
     description = 'Inquire about Scarsdale properties, and save results to a relational database.'
     example = '''For example:
 
-    scarsdale-property-inquiry mysql:///tlevine:password@big.dada.pink/scarsdale
+    scarsdale-property-inquiry mysql+pymysql://tlevine:password@big.dada.pink/scarsdale
 '''
     parser = argparse.ArgumentParser(description=description, epilog = example)
     parser.add_argument('database', type=str, nargs = '?', default = default_url,
