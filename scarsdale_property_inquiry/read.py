@@ -39,6 +39,13 @@ def property_information(table):
     return two_column_table(table)
 
 def assessment_information(table):
+    try:
+        return _assessment_information(table)
+    except:
+        print(property_information(table))
+        raise
+
+def _assessment_information(table):
     matrix = [[td.text_content().replace('\xa0','') for td in tr.xpath('td')] for tr in table.xpath('tr')]
     def to_int(comma):
         return int(comma.replace(',',''))

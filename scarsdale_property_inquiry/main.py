@@ -26,20 +26,20 @@ def html():
                 fp.write(text)
 
 def main():
-    db = dataset.connect('sqlite:///scarsdale-property-inquiry.db')
+    db = dataset.connect('sqlite:////tmp/scarsdale-property-inquiry.db')
     table = db['properties']
 
     session, street_ids = dl.home()
     street = functools.partial(dl.street, session)
-    for street_id in street_ids:
-        session, house_ids = street(street_id)
+    for future in jumble(street, street_ids):
+        session, house_ids = future.result()
         house = functools.partial(dl.house, session)
         for future in jumble(house, house_ids):
             text = future.result()
             try:
                 row = read.flatten(read.info(text))
             except Exception as e:
-                print(street_id, e)
+                print(e)
             else:
                 if row != None:
                     table.upsert(row, ['property_number'])
