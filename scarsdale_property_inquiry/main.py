@@ -2,6 +2,7 @@ import os
 import functools
 
 from jumble import jumble
+import dataset
 
 import scarsdale_property_inquiry.download as dl
 import scarsdale_property_inquiry.read as read
@@ -24,15 +25,17 @@ def html():
             with open(os.path.join(_dir, house_id + '.html'), 'w') as fp:
                 fp.write(text)
 
-def parse():
+def main():
+    db = dataset.connect('sqlite:///scarsdale-property-inquiry.db')
+    table = db['properties']
+
     session, street_ids = dl.home()
     street = functools.partial(dl.street, session)
     for street_id in street_ids:
         session, house_ids = street(street_id)
         house = functools.partial(dl.house, session)
         for future in jumble(house, house_ids):
-            yield read.info(future.result())
-
-def main():
-    for row in parse():
-        print(read.flatten(row))
+            text = future.result()
+            row = read.flatten(read.info(text))
+            if row != None:
+                table.upsert(row, ['property_number'])
