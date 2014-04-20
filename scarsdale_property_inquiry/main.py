@@ -9,11 +9,28 @@ import scarsdale_property_inquiry.download as dl
 import scarsdale_property_inquiry.read as read
 import scarsdale_property_inquiry.schema as schema
 
+readme = '''
+This directory contains big stuff that was produced by the following program.
+http://pypi.python.org/pypi/scarsdale-property-inquiry
+
+info/
+    This directory contains the HTML of the property inquiry pages.
+    You might also see "info.tar.gz", which is just an archive of
+    this directory.
+requests/
+    This directory contains pickled response objects from python-requests.
+scarsdale-property-inquiry.db
+    This is a sqlite3 database that provides structure to the stuff in
+    the HTML files.
+'''
+
 def get_fs(root_dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/big/scarsdale-property-inquiry/')):
     html_dir = os.path.join(root_dir, 'info')
     warehouse = Warehouse(os.path.join(root_dir, 'requests'))
     if not os.path.exists(html_dir):
         os.makedirs(html_dir)
+    with open(os.path.join(root_dir, 'README'), 'w') as fp:
+        fp.write(readme)
     return root_dir, html_dir, warehouse
 
 def html():
