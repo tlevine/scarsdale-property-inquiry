@@ -45,9 +45,25 @@ def html():
             with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
                 fp.write(text)
 
+import argparse
+
+def getparser(root_dir):
+    default_url = 'sqlite:///' + os.path.join(root_dir, 'scarsdale-property-inquiry.db')
+    description = 'Inquire about Scarsdale properties, and save results to a relational database.'
+    example = '''For example:
+
+    scarsdale-property-inquiry mysql:///tlevine:password@big.dada.pink/scarsdale
+'''
+    parser = argparse.ArgumentParser(description=description, epilog = example)
+    parser.add_argument('database', type=str, nargs = '?', default = default_url,
+                        help='The database to save to')
+    return parser
+
 def main():
     root_dir, _, warehouse = get_fs()
-    db = dataset.connect('sqlite:///' + os.path.join(root_dir, 'scarsdale-property-inquiry.db'))
+    url = getparser(root_dir).parse_args().database
+
+    db = dataset.connect(url)
     db.query(schema.properties)
     
     session, street_ids = dl.home(warehouse)
