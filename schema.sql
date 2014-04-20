@@ -38,7 +38,18 @@ CREATE TABLE properties (
     -- Excemptions are in a separate table for now.
 
   -- Building information
-  -- Where is this?
+  year_built TEXT,
+  bldg_style TEXT,
+  bathrooms TEXT,
+  bedrooms TEXT,
+  fireplaces TEXT,
+  central_air TEXT,
+  living_area TEXT,
+  "no._stories" TEXT,
+  "half-bathrooms" TEXT,
+  bath_qual TEXT,
+  overall_cond TEXT,
+  bsmt_type TEXT,
 
   -- Structure information
   ap1 BOOLEAN DEFAULT 0,
