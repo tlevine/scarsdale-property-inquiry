@@ -38,8 +38,9 @@ def main():
             text = future.result()
             try:
                 row = read.flatten(read.info(text))
-            except Exception as e:
-                print(e)
+            except:
+                open('/tmp/a.html', 'w').write(text)
+                raise
             else:
                 if row != None:
                     table.upsert(row, ['property_number'])

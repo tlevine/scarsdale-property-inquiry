@@ -1,3 +1,5 @@
+import os
+
 import lxml.html
 import nose.tools as n
 
@@ -21,3 +23,8 @@ def test_sections():
     yield check, 'structure_information', []
     yield check, 'tax_information', []
     yield check, 'permits', []
+
+def test_nothing():
+    fn = os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'nothing.html')
+    expectation = {'property_number':'19.02.88A'}
+    n.assert_dict_equal(read.info(open(fn).read()), expectation)
