@@ -7,6 +7,7 @@ from pickle_warehouse import Warehouse
 
 import scarsdale_property_inquiry.download as dl
 import scarsdale_property_inquiry.read as read
+import scarsdale_property_inquiry.schema as schema
 
 def get_fs(root_dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/big/scarsdale-property-inquiry/')):
     html_dir = os.path.join(root_dir, 'info')
@@ -29,6 +30,7 @@ def html():
 
 def main():
     db = dataset.connect('sqlite:////tmp/scarsdale-property-inquiry.db')
+    db.query(schema.properties)
     _, warehouse = get_fs()
     
     session, street_ids = dl.home(warehouse)

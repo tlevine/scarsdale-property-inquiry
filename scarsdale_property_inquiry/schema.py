@@ -1,5 +1,5 @@
+properties = '''
 CREATE TABLE properties (
-
   -- Property Information
   property_number TEXT,
   curr_owner TEXT,
@@ -141,3 +141,4 @@ CREATE TABLE properties (
  
   PRIMARY KEY property_number
 );
+'''
