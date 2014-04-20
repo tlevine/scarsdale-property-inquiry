@@ -45,7 +45,3 @@ def main():
                     except:
                         print(flat_row)
                         raise
-
-def main():
-    response = dl.house(None, '02.05.2A.2')
-    open('/tmp/a.html', 'w').write(response)

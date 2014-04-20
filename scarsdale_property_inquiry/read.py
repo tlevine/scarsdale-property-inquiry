@@ -1,4 +1,6 @@
+import warnings
 from collections import OrderedDict
+
 from lxml.html import fromstring
 
 def info(text):
@@ -50,10 +52,12 @@ def property_information(table):
 def assessment_information(table):
     matrix = [[td.text_content().replace('\xa0','') for td in tr.xpath('td')] for tr in table.xpath('tr')]
     def to_int(comma):
-        try:
-            return int(comma.replace(',',''))
-        except:
-            raise ValueError('Missing a number in the assessment information for %s' % table.xpath('id("dnn_ctr1381_ViewPIRPS_lblProperty")/text()'))
+        nocomma = comma.replace(',','')
+        if nocomma == '':
+            warnings.warn('Missing a number in the assessment information for %s' % table.xpath('id("dnn_ctr1381_ViewPIRPS_lblProperty")/text()'))
+            return ''
+        else:
+            return int(nocomma)
 
     av_land = list(map(to_int, matrix[3][1:4]))
     av_total = list(map(to_int, matrix[4][1:4]))
