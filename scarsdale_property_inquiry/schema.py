@@ -139,6 +139,6 @@ CREATE TABLE properties (
   -- Tax information is in a separate table.
   -- Permits is in a separate table.
  
-  PRIMARY KEY property_number
+  UNIQUE(property_number)
 );
 '''
