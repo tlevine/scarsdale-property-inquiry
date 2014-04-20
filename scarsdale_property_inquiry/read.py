@@ -90,7 +90,7 @@ def assessment_information(table):
     return results
 
 def building_information(table):
-    return two_column_table
+    return two_column_table(table)
 
 def structure_information(table):
     keys = table.xpath('descendant::td[not(@style)]/text()')[1:]
