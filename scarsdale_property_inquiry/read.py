@@ -91,7 +91,7 @@ def building_information(table):
     return two_column_table
 
 def structure_information(table):
-    return {str(key):True for key in table.xpath('descendant::td[not(@style)]/text()')}
+    return {str(key[:3]):True for key in table.xpath('descendant::td[not(@style)]/text()')}
 
 def tax_information(table):
     trs = table.xpath('tr[not(td[@style] or td[@colspan])]')
