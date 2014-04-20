@@ -1,7 +1,7 @@
 properties = '''
 CREATE TABLE IF NOT EXISTS properties (
   -- Property Information
-  property_number TEXT NOT NULL,
+  property_number VARCHAR(30) NOT NULL,
   curr_owner TEXT,
   wetlands TEXT,
   address TEXT,
