@@ -49,8 +49,4 @@ def main():
                         db['excemptions'].upsert(excemption, ['property_number'])
                 flat_row = read.flatten(bumpy_row)
                 if flat_row != None and 'property_number' in flat_row:
-                    try:
-                        db['properties'].upsert(flat_row, ['property_number'])
-                    except:
-                        print(flat_row)
-                        raise
+                    db['properties'].upsert(flat_row, ['property_number'])
