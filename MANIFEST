@@ -2,7 +2,10 @@
 README
 setup.py
 bin/scarsdale-property-inquiry
+scarsdale_property_inquiry/__init__.py
 scarsdale_property_inquiry/cache.py
 scarsdale_property_inquiry/download.py
 scarsdale_property_inquiry/main.py
 scarsdale_property_inquiry/params.py
+scarsdale_property_inquiry/read.py
+scarsdale_property_inquiry/schema.py
