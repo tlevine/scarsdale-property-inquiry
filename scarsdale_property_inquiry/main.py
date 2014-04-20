@@ -37,12 +37,10 @@ def main():
             text = future.result()
             bumpy_row = read.info(text)
             if bumpy_row != None:
-                
-                if bumpy_row['excemptions'] != []:
+                if bumpy_row.get('excemptions', []) != []:
                     for excemption in bumpy_row['excemptions']:
                         excemption['property_number'] = bumpy_row['Property Number']
                         db['excemptions'].upsert(excemption, ['property_number'])
-
                 flat_row = read.flatten(bumpy_row)
                 if flat_row != None and 'property_number' in flat_row:
                     try:
