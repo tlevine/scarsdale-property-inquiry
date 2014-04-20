@@ -27,8 +27,7 @@ def html():
 
 def main():
     db = dataset.connect('sqlite:////tmp/scarsdale-property-inquiry.db')
-    table = db['properties']
-
+    
     session, street_ids = dl.home()
     street = functools.partial(dl.street, session)
     for future in jumble(street, street_ids):
@@ -38,10 +37,16 @@ def main():
             text = future.result()
             bumpy_row = read.info(text)
             if bumpy_row != None:
+                
+                if bumpy_row['excemptions'] != []:
+                    for excemption in bumpy_row['excemptions']:
+                        excemption['property_number'] = bumpy_row['Property Number']
+                        db['excemptions'].upsert(excemption, ['property_number'])
+
                 flat_row = read.flatten(bumpy_row)
                 if flat_row != None and 'property_number' in flat_row:
                     try:
-                        table.upsert(flat_row, ['property_number'])
+                        db['properties'].upsert(flat_row, ['property_number'])
                     except:
                         print(flat_row)
                         raise
