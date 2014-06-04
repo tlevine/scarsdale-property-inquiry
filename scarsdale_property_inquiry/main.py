@@ -33,18 +33,6 @@ def get_fs(root_dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/big/s
         fp.write(readme)
     return root_dir, html_dir, warehouse
 
-def html():
-    _, html_dir, _ = get_fs()
-    session, street_ids = dl.home()
-    street = functools.partial(dl.street, session)
-    for street_id in street_ids:
-        session, house_ids = street(street_id)
-        house = functools.partial(dl.house, session)
-        for house_id in house_ids:
-            text = house(house_id)
-            with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
-                fp.write(text)
-
 import argparse
 
 def getparser(root_dir):
@@ -60,7 +48,7 @@ def getparser(root_dir):
     return parser
 
 def main():
-    root_dir, _, warehouse = get_fs()
+    root_dir, html_dir, warehouse = get_fs()
     url = getparser(root_dir).parse_args().database
 
     db = dataset.connect(url)
@@ -73,6 +61,8 @@ def main():
         house = functools.partial(dl.house, warehouse, session)
         for future in jumble(house, house_ids):
             text = future.result()
+            with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
+                fp.write(text)
             bumpy_row = read.info(text)
             if bumpy_row != None:
                 excemptions = bumpy_row.get('assessment_information', {}).get('excemptions', [])
