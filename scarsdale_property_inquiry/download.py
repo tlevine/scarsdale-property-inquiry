@@ -18,6 +18,7 @@ def home(warehouse):
     html = fromstring(response.text)
 
     session = parse_session(response)
+    print(html.xpath('//select/option/@value'))
     return session, street_ids(html)
 
 def street(warehouse, session, street_id):
@@ -26,6 +27,7 @@ def street(warehouse, session, street_id):
     html = fromstring(response.text)
 
     session = parse_session(response)
+    print(html.xpath('//select/option/@value'))
     return session, house_ids(html)
 
 def house(warehouse, session, house_id):
