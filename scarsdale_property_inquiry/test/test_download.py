@@ -10,4 +10,4 @@ def test_home_values():
         response = pickle.load(fp)
     html = fromstring(response.text)
     observed = dl.home_values(html)
-    n.assert_list_equal(observed, [3])
+    n.assert_in('WINDSOR LA', observed)
