@@ -61,7 +61,6 @@ def main():
         house = functools.partial(dl.house, warehouse, session)
         for future in jumble(lambda house_id: (house_id, house(house_id)), house_ids):
             house_id, text = future.result()
-            print(house_id)
             with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
                 fp.write(text)
             bumpy_row = read.info(text)
