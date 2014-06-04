@@ -29,5 +29,5 @@ def _post(section_name, eventtarget):
         return response
     return f
 
-street = _post('street', 'dnn$ctr1381$ViewPIRPS$lstboxStreets')
-house  = _post('house',  'dnn$ctr1381$ViewPIRPS$lstboxAddresses')
+street = _post('street', 'dnn_ctr1398_ViewHelloWorld_lstboxStreets')
+house  = _post('house',  'dnn_ctr1398_ViewHelloWorld_lstboxAddresses')
