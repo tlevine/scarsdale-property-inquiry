@@ -24,6 +24,7 @@ def test_sections():
     yield check, 'tax_information', []
     yield check, 'permits', []
 
+@n.nottest
 def test_nothing():
     fn = os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'nothing.html')
     expectation = {'property_number':'19.02.88A'}

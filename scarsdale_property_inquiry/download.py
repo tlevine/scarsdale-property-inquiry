@@ -18,7 +18,7 @@ def home(warehouse):
     html = fromstring(response.text)
 
     session = parse_session(response)
-    values = html.xpath('id("dnn_ctr1381_ViewPIRPS_lstboxStreets")/option/@value')
+    values = home_values(html)
     street_ids = map(str, values)
 
     return session, street_ids
@@ -38,3 +38,6 @@ def house(warehouse, session, house_id):
     'house_id -> house_data:dict'
     response = scarsdale_property_inquiry.cache.house(warehouse, session, house_id)
     return response.text
+
+def home_values(html):
+    return html.xpath('id("dnn_ctr1381_ViewPIRPS_lstboxStreets")/option/@value')
