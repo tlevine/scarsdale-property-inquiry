@@ -18,6 +18,6 @@ setup(name='scarsdale-property-inquiry',
         'dataset', 'PyMySQL',
     ],
     tests_require = ['nose'],
-    version='0.2.0',
+    version='0.3.0',
     license='AGPL',
 )
