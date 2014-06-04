@@ -26,10 +26,7 @@ def street(warehouse, session, street_id):
     html = fromstring(response.text)
 
     session = parse_session(response)
-    values = html.xpath('id("dnn_ctr1381_ViewPIRPS_lstboxAddresses")/option/@value')
-    house_ids = map(str, values)
-
-    return session, house_ids
+    return session, house_ids(html)
 
 def house(warehouse, session, house_id):
     'house_id -> house_data:dict'
@@ -38,3 +35,6 @@ def house(warehouse, session, house_id):
 
 def street_ids(html):
     return [str(value.strip()) for value in html.xpath('id("dnn_ctr1398_ViewHelloWorld_lstboxStreets")/option/@value')]
+
+def house_ids(html):
+    return [str(value.strip()) for value in html.xpath('id("dnn_ctr1398_ViewHelloWorld_lstboxAddresses")/option/@value')]

@@ -11,3 +11,10 @@ def test_street_ids():
     html = fromstring(response.text)
     observed = dl.street_ids(html)
     n.assert_in('WINDSOR LA', observed)
+
+def test_house_ids():
+    with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'WALWORTH AVE'), 'rb') as fp:
+        response = pickle.load(fp)
+    html = fromstring(response.text)
+    observed = dl.house_ids(html)
+    n.assert_in('6 WALWORTH AVE', observed)
