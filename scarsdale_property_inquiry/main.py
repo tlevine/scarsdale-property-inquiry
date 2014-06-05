@@ -64,7 +64,8 @@ def main():
     db.query(schema.properties)
     if p.house != None:
         session, _ = dl.home(warehouse)
-        generator = [house(html_dir, warehouse, db, session, p.house)]
+        result = house(html_dir, warehouse, db, session, p.house)
+        generator = [] if result == None else [result]
     elif p.street != None:
         session, _ = dl.home(warehouse)
         generator = street(warehouse, session, p.street)
