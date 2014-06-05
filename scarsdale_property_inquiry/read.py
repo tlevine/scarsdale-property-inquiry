@@ -15,7 +15,6 @@ def info(text):
 #       # Weird property
 #       return {'property_information':{'property_number': str(html.xpath('id("dnn_ctr1381_ViewPIRPS_lblProperty")/text()')[0])}}
     else:
-        output = {}
         funcs = [
             property_information, assessment_information,
             building_information, structure_information,
@@ -23,6 +22,8 @@ def info(text):
         ]
 #       tables = html.xpath('id("dnn_ctr1381_ViewPIRPS_Panel1")/table')
         tables = html.xpath('//div[@style="width:100%;"]')
+        for func, table in zip(funcs, tables):
+            print(func, func(table))
         return {func.__name__: func(table) for func, table in zip(funcs, tables)}
 
 def flatten(row):
