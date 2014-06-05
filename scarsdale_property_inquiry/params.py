@@ -26,7 +26,7 @@ def data(publickeytoken, viewstate, eventvalidation, eventtarget, value):
         (eventtarget, value),
         ('dnn$dnnSEARCH$Search', 'SiteRadioButton'),
         ('dnn$dnnSEARCH$txtSearch', ''),
-        ('ScrollTop', 228), # how far the page is scrolled
+        ('ScrollTop', 73), # how far the page is scrolled
         ('__dnnVariable', '{"__scdoff":"1"}'),
     ]
 
