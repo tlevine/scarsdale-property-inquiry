@@ -46,10 +46,13 @@ def getparser(root_dir):
     parser = argparse.ArgumentParser(description=description, epilog = example)
     parser.add_argument('--database', type=str, nargs = '?', default = default_url,
                         help='The database to save to')
-    parser.add_argument('--street', type=str, nargs = '?',
-                        help='Get the houses on a street.')
-    parser.add_argument('--house', type=str, nargs = '?',
-                        help='Get the information about a particular house.')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--streets', action = 'store_true', default = False,
+                               help='List all of the street names.')
+    group.add_argument('--street', type=str, nargs = '?',
+                       help='Get the houses on a street.')
+    group.add_argument('--house', type=str, nargs = '?',
+                       help='Get the information about a particular house.')
     return parser
 
 def main():
@@ -61,23 +64,29 @@ def main():
     db.query(schema.properties)
     if p.house != None:
         session, _ = dl.home(warehouse)
-        row = json.dumps(house(html_dir, warehouse, db, session, p.house))
-        stdout.write(row + '\n')
+        generator = [json.dumps(house(html_dir, warehouse, db, session, p.house))]
     elif p.street != None:
-        print(p.street)
+        session, _ = dl.home(warehouse)
+        generator = street(warehouse, session, p.street)
+    elif p.streets:
+        _, generator = dl.home(warehouse)
     else:
-        for row in village(html_dir, warehouse, db):
-            stdout.write(json.dumps(row) + '\n')
+        generator = village(html_dir, warehouse, db)
+    for row in generator:
+        stdout.write(json.dumps(row) + '\n')
 
 def village(html_dir, warehouse, db):
     session, street_ids = dl.home(warehouse)
-    street = functools.partial(dl.street, warehouse, session)
-    for future in jumble(street, street_ids):
+    for future in jumble(functool.partial(street, warehouse, session), street_ids):
         session, house_ids = future.result()
         for future in jumble(functools.partial(house, html_dir, warehouse, db, session), house_ids):
             row = future.result()
             if row != None:
                 yield row
+
+def street(warehouse, session, street_id):
+    _, house_ids = dl.street(warehouse, session, street_id)
+    yield from house_ids
 
 def house(html_dir, warehouse, db, session, house_id):
     text = dl.house(warehouse, session, house_id)
