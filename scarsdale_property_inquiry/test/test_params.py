@@ -21,7 +21,7 @@ def test_data():
         'ScrollTop': 228, # how far the page is scrolled
         '__dnnVariable': '{"__scdoff":"1"}',
     }
-    n.assert_dict_equal(observed, expected)
+    n.assert_dict_equal(dict(observed), expected)
 
 def test_house_data():
     observed = params.house_data('31bf3856ad364e35:en:eb198dbd-2212-44f6-bb15-882bde414f00:ea597d4b:b25378d2', 'gobbldygook', 'other gobbldygook', '05.04.43')
@@ -41,7 +41,7 @@ def test_house_data():
         'ScrollTop': 228, # how far the page is scrolled
         '__dnnVariable': '{"__scdoff":"1"}',
     }
-    n.assert_dict_equal(observed, expected)
+    n.assert_dict_equal(dict(observed), expected)
 
 def test_street_data():
     observed = params.street_data('31bf3856ad364e35:en:eb198dbd-2212-44f6-bb15-882bde414f00:ea597d4b:b25378d2', 'gobbldygook', 'other gobbldygook', 'ARCHER LA')
@@ -62,4 +62,4 @@ def test_street_data():
         'ScrollTop': 228, # how far the page is scrolled
         '__dnnVariable': '{"__scdoff":"1"}',
     }
-    n.assert_dict_equal(observed, expected)
+    n.assert_dict_equal(dict(observed), expected)
