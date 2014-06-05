@@ -45,15 +45,26 @@ def getparser(root_dir):
     parser = argparse.ArgumentParser(description=description, epilog = example)
     parser.add_argument('database', type=str, nargs = '?', default = default_url,
                         help='The database to save to')
+    parser.add_argument('street', type=str, nargs = '?',
+                        help='Get the houses on a street.')
+    parser.add_argument('house', type=str, nargs = '?',
+                        help='Get the information about a particular house.')
     return parser
 
 def main():
     root_dir, html_dir, warehouse = get_fs()
-    url = getparser(root_dir).parse_args().database
+    p = getparser(root_dir).parse_args()
 
-    db = dataset.connect(url)
+    db = dataset.connect(p.database)
     db.query(schema.properties)
-    
+    if p.house != None:
+        print(p.house)
+    elif p.street != None:
+        print(p.street)
+    else:
+        village(root_dir, warehouse, db)
+
+def village(root_dir, html_dir, warehouse, db):
     session, street_ids = dl.home(warehouse)
     street = functools.partial(dl.street, warehouse, session)
     for future in jumble(street, street_ids):
