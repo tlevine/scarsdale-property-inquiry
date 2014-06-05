@@ -1,3 +1,4 @@
+import sys
 import os
 import functools
 
@@ -43,44 +44,53 @@ def getparser(root_dir):
     scarsdale-property-inquiry mysql+pymysql://tlevine:password@big.dada.pink/scarsdale
 '''
     parser = argparse.ArgumentParser(description=description, epilog = example)
-    parser.add_argument('database', type=str, nargs = '?', default = default_url,
+    parser.add_argument('--database', type=str, nargs = '?', default = default_url,
                         help='The database to save to')
-    parser.add_argument('street', type=str, nargs = '?',
+    parser.add_argument('--street', type=str, nargs = '?',
                         help='Get the houses on a street.')
-    parser.add_argument('house', type=str, nargs = '?',
+    parser.add_argument('--house', type=str, nargs = '?',
                         help='Get the information about a particular house.')
     return parser
 
 def main():
+    stdout = sys.stdout
     root_dir, html_dir, warehouse = get_fs()
     p = getparser(root_dir).parse_args()
 
     db = dataset.connect(p.database)
     db.query(schema.properties)
     if p.house != None:
-        print(p.house)
+        session, _ = dl.home(warehouse)
+        row = json.dumps(house(html_dir, warehouse, db, session, p.house))
+        stdout.write(row + '\n')
     elif p.street != None:
         print(p.street)
     else:
-        village(root_dir, warehouse, db)
+        for row in village(html_dir, warehouse, db):
+            stdout.write(json.dumps(row) + '\n')
 
-def village(root_dir, html_dir, warehouse, db):
+def village(html_dir, warehouse, db):
     session, street_ids = dl.home(warehouse)
     street = functools.partial(dl.street, warehouse, session)
     for future in jumble(street, street_ids):
         session, house_ids = future.result()
-        house = functools.partial(dl.house, warehouse, session)
-        for future in jumble(lambda house_id: (house_id, house(house_id)), house_ids):
-            house_id, text = future.result()
-            with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
-                fp.write(text)
-            bumpy_row = read.info(text)
-            if bumpy_row != None:
-                excemptions = bumpy_row.get('assessment_information', {}).get('excemptions', [])
-                if excemptions != []:
-                    for excemption in excemptions:
-                        excemption['property_number'] = bumpy_row['property_information']['Property Number']
-                        db['excemptions'].upsert(excemption, ['property_number'])
-                flat_row = read.flatten(bumpy_row)
-                if flat_row != None and 'property_number' in flat_row:
-                    db['properties'].upsert(flat_row, ['property_number'])
+        for future in jumble(functools.partial(house, html_dir, warehouse, db, session), house_ids):
+            row = future.result()
+            if row != None:
+                yield row
+
+def house(html_dir, warehouse, db, session, house_id):
+    text = dl.house(warehouse, session, house_id)
+    with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
+        fp.write(text)
+    bumpy_row = read.info(text)
+    if bumpy_row != None:
+        excemptions = bumpy_row.get('assessment_information', {}).get('excemptions', [])
+        if excemptions != []:
+            for excemption in excemptions:
+                excemption['property_number'] = bumpy_row['property_information']['Property Number']
+                db['excemptions'].upsert(excemption, ['property_number'])
+        flat_row = read.flatten(bumpy_row)
+        if flat_row != None and 'property_number' in flat_row:
+            db['properties'].upsert(flat_row, ['property_number'])
+        return flat_row
