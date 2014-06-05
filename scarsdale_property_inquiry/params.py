@@ -29,11 +29,12 @@ def data(publickeytoken, viewstate, eventvalidation, eventtarget, value):
     }
 
 def house_data(publickeytoken, viewstate, eventvalidation, house_id):
-    eventtarget = 'dnn_ctr1398_ViewHelloWorld_lstboxAddresses'
+    eventtarget = 'dnn$ctr1398$ViewHelloWorld$lstboxAddresses'
     result = data(publickeytoken, viewstate, eventvalidation, eventtarget, house_id)
     return result
 
 def street_data(publickeytoken, viewstate, eventvalidation, street_id):
-    eventtarget = 'dnn_ctr1398_ViewHelloWorld_lstboxStreets'
-    result = data(publickeytoken, viewstate, eventvalidation, eventtarget, house_id)
+    eventtarget = 'dnn$ctr1398$ViewHelloWorld$lstboxStreets'
+    result = data(publickeytoken, viewstate, eventvalidation, eventtarget, street_id)
+    result['dnn$ctr1398$ViewHelloWorld$txtProperty'] = ''
     return result
