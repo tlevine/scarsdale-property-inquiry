@@ -15,7 +15,7 @@ def home(warehouse):
         warehouse['home'] = response
     return response
 
-def _post(section_name, eventtarget):
+def _post(section_name, data_func):
     def f(warehouse, session, _id):
         key = (section_name, _id)
         if key in warehouse:
@@ -29,5 +29,5 @@ def _post(section_name, eventtarget):
         return response
     return f
 
-street = _post('street', 'dnn_ctr1398_ViewHelloWorld_lstboxStreets')
-house  = _post('house',  'dnn_ctr1398_ViewHelloWorld_lstboxAddresses')
+street = _post('street', p.street_data)
+house  = _post('house',  p.house_data)

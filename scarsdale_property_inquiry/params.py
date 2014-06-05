@@ -27,3 +27,13 @@ def data(publickeytoken, viewstate, eventvalidation, eventtarget, value):
         'ScrollTop': 228, # how far the page is scrolled
         '__dnnVariable': '{"__scdoff":"1"}',
     }
+
+def house_data(publickeytoken, viewstate, eventvalidation, house_id):
+    eventtarget = 'dnn_ctr1398_ViewHelloWorld_lstboxAddresses'
+    result = data(publickeytoken, viewstate, eventvalidation, eventtarget, house_id)
+    return result
+
+def street_data(publickeytoken, viewstate, eventvalidation, street_id):
+    eventtarget = 'dnn_ctr1398_ViewHelloWorld_lstboxStreets'
+    result = data(publickeytoken, viewstate, eventvalidation, eventtarget, house_id)
+    return result
