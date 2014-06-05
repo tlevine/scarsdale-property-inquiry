@@ -21,6 +21,6 @@ setup(name='scarsdale-property-inquiry',
         'jumble>=0.0.1',
     ],
     tests_require = ['nose'],
-    version='0.3.0',
+    version='0.4.0',
     license='AGPL',
 )
