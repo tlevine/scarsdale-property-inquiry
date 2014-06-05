@@ -41,5 +41,4 @@ def street_data(publickeytoken, viewstate, eventvalidation, street_id):
     result = data(publickeytoken, viewstate, eventvalidation, eventtarget, street_id)
     i = result.index(("dnn$dnnSEARCH$Search", "SiteRadioButton"))
     result.insert(i, ('dnn$ctr1398$ViewHelloWorld$txtProperty', ''))
-    print(result)
     return result
