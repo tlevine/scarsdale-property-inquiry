@@ -10,10 +10,10 @@ def info(text):
     if int(html.xpath('count(id("dnn_ctl07_lblHeading"))')) == 1:
         # There was an error
         return None
-    elif int(html.xpath('count(id("dnn_ctr1381_ViewPIRPS_lblOwner")/text())')) == 0:
-        open('/tmp/a.html', 'w').write(text)
-        # Weird property
-        return {'property_information':{'property_number': str(html.xpath('id("dnn_ctr1381_ViewPIRPS_lblProperty")/text()')[0])}}
+#   elif int(html.xpath('count(id("dnn_ctr1381_ViewPIRPS_lblOwner")/text())')) == 0:
+#       open('/tmp/a.html', 'w').wite(text)
+#       # Weird property
+#       return {'property_information':{'property_number': str(html.xpath('id("dnn_ctr1381_ViewPIRPS_lblProperty")/text()')[0])}}
     else:
         output = {}
         funcs = [
@@ -21,7 +21,8 @@ def info(text):
             building_information, structure_information,
             tax_information, permits,
         ]
-        tables = html.xpath('id("dnn_ctr1381_ViewPIRPS_Panel1")/table')
+#       tables = html.xpath('id("dnn_ctr1381_ViewPIRPS_Panel1")/table')
+        tables = html.xpath('//div[@style="width:100%;"]')
         return {func.__name__: func(table) for func, table in zip(funcs, tables)}
 
 def flatten(row):
