@@ -31,7 +31,8 @@ def data(publickeytoken, viewstate, eventvalidation, eventtarget, value):
     ]
 
 def house_data(publickeytoken, viewstate, eventvalidation, house_id):
-    eventtarget = 'dnn$ctr1398$ViewHelloWorld$lstboxAddresses'
+#   eventtarget = 'dnn$ctr1398$ViewHelloWorld$lstboxAddresses'
+    eventtarget = 'dnn$ctr1398$ViewHelloWorld$txtProperty'
     result = data(publickeytoken, viewstate, eventvalidation, eventtarget, house_id)
     return result
 
@@ -40,4 +41,5 @@ def street_data(publickeytoken, viewstate, eventvalidation, street_id):
     result = data(publickeytoken, viewstate, eventvalidation, eventtarget, street_id)
     i = result.index(("dnn$dnnSEARCH$Search", "SiteRadioButton"))
     result.insert(i, ('dnn$ctr1398$ViewHelloWorld$txtProperty', ''))
+    print(result)
     return result
