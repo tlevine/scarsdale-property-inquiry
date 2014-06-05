@@ -22,9 +22,10 @@ def _post(section_name, data_func):
             response = warehouse[key]
         else:
             cookies, publickeytoken, viewstate, eventvalidation = session
-            data = p.data(publickeytoken, viewstate, eventvalidation, eventtarget, _id)
+            data = data_func(publickeytoken, viewstate, eventvalidation, _id)
+            files = {key: ('', str(value)) for key, value in data.items()}
             randomsleep()
-            response = requests.post(p.url(), headers = p.headers(ua()), data = data, cookies = cookies)
+            response = requests.post(p.url(), headers = p.headers(ua()), files = files, cookies = cookies)
             warehouse[key] = response
         return response
     return f
