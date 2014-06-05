@@ -1,4 +1,5 @@
 import sys
+import json
 import os
 import functools
 
@@ -74,7 +75,7 @@ def main():
     else:
         generator = village(html_dir, warehouse, db)
     for row in generator:
-        stdout.write(row + '\n')
+        stdout.write(json.dumps(row) + '\n')
 
 def village(html_dir, warehouse, db):
     session, street_ids = dl.home(warehouse)
@@ -102,5 +103,7 @@ def house(html_dir, warehouse, db, session, house_id):
                 db['excemptions'].upsert(excemption, ['property_number'])
         flat_row = read.flatten(bumpy_row)
         if flat_row != None and 'property_number' in flat_row:
+            if '' in flat_row:
+                del(flat_row[''])
             db['properties'].upsert(flat_row, ['property_number'])
         return flat_row
