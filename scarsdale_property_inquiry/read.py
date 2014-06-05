@@ -21,9 +21,7 @@ def info(text):
             tax_information, permits,
         ]
 #       tables = html.xpath('id("dnn_ctr1381_ViewPIRPS_Panel1")/table')
-        tables = html.xpath('//div[@style="width:100%;"]')
-        for func, table in zip(funcs, tables):
-            print(func, func(table))
+        tables = html.xpath('//div[@style="width:100%;"]/table')
         return {func.__name__: func(table) for func, table in zip(funcs, tables)}
 
 def flatten(row):
