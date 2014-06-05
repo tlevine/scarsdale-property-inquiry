@@ -64,7 +64,7 @@ def main():
     db.query(schema.properties)
     if p.house != None:
         session, _ = dl.home(warehouse)
-        generator = [json.dumps(house(html_dir, warehouse, db, session, p.house))]
+        generator = [house(html_dir, warehouse, db, session, p.house)]
     elif p.street != None:
         session, _ = dl.home(warehouse)
         generator = street(warehouse, session, p.street)
@@ -73,7 +73,7 @@ def main():
     else:
         generator = village(html_dir, warehouse, db)
     for row in generator:
-        stdout.write(json.dumps(row) + '\n')
+        stdout.write(row + '\n')
 
 def village(html_dir, warehouse, db):
     session, street_ids = dl.home(warehouse)
