@@ -79,7 +79,7 @@ def main():
 
 def village(html_dir, warehouse, db):
     session, street_ids = dl.home(warehouse)
-    for future in jumble(functool.partial(street, warehouse, session), street_ids):
+    for future in jumble(functools.partial(street, warehouse, session), street_ids):
         session, house_ids = future.result()
         for future in jumble(functools.partial(house, html_dir, warehouse, db, session), house_ids):
             row = future.result()
