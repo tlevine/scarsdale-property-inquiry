@@ -2,14 +2,16 @@ import sys
 import json
 import os
 import functools
+from itertools import chain
 
-from jumble import jumble
+from randomsleep import randomsleep
 import dataset
-from pickle_warehouse import Warehouse
+import lxml.html
 
 import scarsdale_property_inquiry.download as dl
 import scarsdale_property_inquiry.read as read
 import scarsdale_property_inquiry.schema as schema
+from .fs import CACHE_DIRECTORY
 
 readme = '''
 This directory contains big stuff that was produced by the following program.
@@ -26,14 +28,13 @@ scarsdale-property-inquiry.db
     the HTML files.
 '''
 
-def get_fs(root_dir = os.path.expanduser('~/dadawarehouse.thomaslevine.com/big/scarsdale-property-inquiry/')):
+def get_fs(root_dir = CACHE_DIRECTORY):
     html_dir = os.path.join(root_dir, 'info')
-    warehouse = Warehouse(os.path.join(root_dir, 'requests'))
     if not os.path.exists(html_dir):
         os.makedirs(html_dir)
     with open(os.path.join(root_dir, 'README'), 'w') as fp:
         fp.write(readme)
-    return root_dir, html_dir, warehouse
+    return root_dir, html_dir
 
 import argparse
 
@@ -54,47 +55,62 @@ def getparser(root_dir):
                        help='Get the houses on a street.')
     group.add_argument('--house', type=str, nargs = '?',
                        help='Get the information about a particular house.')
+    group.add_argument('--parallel', action = 'store_true', default = False,
+                       help='Run downloads in parallel.')
     return parser
 
 def main():
     stdout = sys.stdout
-    root_dir, html_dir, warehouse = get_fs()
+    root_dir, html_dir = get_fs()
     p = getparser(root_dir).parse_args()
 
     db = dataset.connect(p.database)
     db.query(schema.properties)
     if p.house != None:
-        session, _ = dl.home(warehouse)
-        result = house(html_dir, warehouse, db, session, p.house)
+        response = dl.home()
+        session = dl.parse_session(response)
+        result = house(html_dir, db, session, p.house)
         generator = [] if result == None else [result]
     elif p.street != None:
-        session, _ = dl.home(warehouse)
-        generator = street(warehouse, session, p.street)
+        response = dl.home()
+        session = dl.parse_session(response)
+        generator = street(session, p.street)
     elif p.streets:
-        _, generator = dl.home(warehouse)
+        response = dl.home()
+        session = dl.parse_session(response)
+        generator = chain(street(session, s) for s in p.streets)
     else:
-        generator = village(html_dir, warehouse, db)
+        generator = village(html_dir, db, p.parallel)
     for row in generator:
         stdout.write(json.dumps(row) + '\n')
 
-def village(html_dir, warehouse, db):
-    session, street_ids = dl.home(warehouse)
-    for future in jumble(functools.partial(street, warehouse, session), street_ids):
-        session, house_ids = future.result()
-        for future in jumble(functools.partial(house, html_dir, warehouse, db, session), house_ids):
-            row = future.result()
+def village(html_dir, db, parallel):
+    if parallel:
+        from jumble import jumble
+    else:
+        from collections import namedtuple
+        Future = namedtuple('Future', ['result'])
+        jumble = lambda f, xs: (Future(lambda: f(x)) for x in xs)
+
+    response = dl.home()
+    street_ids = dl.street_ids(lxml.html.fromstring(response.text))
+    session = dl.parse_session(response)
+    for future1 in jumble(functools.partial(street, session), street_ids):
+        session, house_ids = future1.result()
+        for future2 in jumble(functools.partial(house, html_dir, db, session), house_ids):
+            row = future2.result()
             if row != None:
                 yield row
 
-def street(warehouse, session, street_id):
-    _, house_ids = dl.street(warehouse, session, street_id)
-    yield from house_ids
+def street(session, street_id):
+    response = dl.street(session, street_id)
+    return dl.parse_session(response), dl.house_ids(lxml.html.fromstring(response.text))
 
-def house(html_dir, warehouse, db, session, house_id):
-    text = dl.house(warehouse, session, house_id)
+def house(html_dir, db, session, house_id):
+    response = dl.house(session, house_id)
     with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
-        fp.write(text)
-    bumpy_row = read.info(text)
+        fp.write(response.text)
+    bumpy_row = read.info(response.text)
     if bumpy_row != None:
         excemptions = bumpy_row.get('assessment_information', {}).get('excemptions', [])
         if excemptions != []:
