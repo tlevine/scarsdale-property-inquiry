@@ -1,9 +1,17 @@
 import pickle, os
+import json
 
 from lxml.html import fromstring
 import nose.tools as n
 
 import scarsdale_property_inquiry.download as dl
+
+def test_parse_session():
+    with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.p'), 'r') as fp:
+        response = pickle.load(fp)
+    with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.json'), 'r') as fp:
+        exectation = json.load(fp)
+    n.assert_dict_equal(parse_session(response), expectation)
 
 def test_street_ids():
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home'), 'rb') as fp:
