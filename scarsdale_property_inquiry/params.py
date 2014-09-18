@@ -12,7 +12,7 @@ def headers(user_agent):
         'Content-Encoding': 'gzip',
     }
 
-def data(publickeytoken, viewstate, eventvalidation, eventtarget, value):
+def _data(publickeytoken, viewstate, eventvalidation, eventtarget, value):
     return [
         ('StylesheetManager_TSSM', ''),
         ('ScriptManager_TSM', ';;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=' + publickeytoken),
@@ -33,12 +33,12 @@ def data(publickeytoken, viewstate, eventvalidation, eventtarget, value):
 def house_data(publickeytoken, viewstate, eventvalidation, house_id):
 #   eventtarget = 'dnn$ctr1398$ViewHelloWorld$lstboxAddresses'
     eventtarget = 'dnn$ctr1398$ViewHelloWorld$txtProperty'
-    result = data(publickeytoken, viewstate, eventvalidation, eventtarget, house_id)
+    result = _data(publickeytoken, viewstate, eventvalidation, eventtarget, house_id)
     return result
 
 def street_data(publickeytoken, viewstate, eventvalidation, street_id):
     eventtarget = 'dnn$ctr1398$ViewHelloWorld$lstboxStreets'
-    result = data(publickeytoken, viewstate, eventvalidation, eventtarget, street_id)
+    result = _data(publickeytoken, viewstate, eventvalidation, eventtarget, street_id)
     i = result.index(("dnn$dnnSEARCH$Search", "SiteRadioButton"))
     result.insert(i, ('dnn$ctr1398$ViewHelloWorld$txtProperty', ''))
     return result
