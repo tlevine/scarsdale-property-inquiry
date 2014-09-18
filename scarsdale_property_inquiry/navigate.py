@@ -24,7 +24,7 @@ def headers(user_agent):
 def _compose_postback(event_target, event_argument, html, selected_option):
     selects = html.xpath('//select/@name')
     if len(selects) != 1:
-        raise NotImplementedError('compose_postback expects exactly one select')
+        raise NotImplementedError('_compose_postback expects exactly one select')
     data = {selects[0]: selected_option}
 
     inputs = (i.attrib for i in html.xpath('id("Form")//input'))
@@ -36,7 +36,7 @@ def _compose_postback(event_target, event_argument, html, selected_option):
     })
     return data
 
-house_postback = partial(compose_postback,
+house_postback = partial(_compose_postback,
     'dnn$ctr1398$ViewHelloWorld$lstboxAddresses', '')
-street_postback = partial(compose_postback,
+street_postback = partial(_compose_postback,
     'dnn$ctr1398$ViewHelloWorld$lstboxStreets', '')

@@ -9,7 +9,7 @@ import dataset
 import lxml.html
 
 import scarsdale_property_inquiry.download as dl
-from .navigate import parse_session, street_ids, house_ids
+from .navigate import street_ids, house_ids
 from .assessment import info, flatten 
 import scarsdale_property_inquiry.schema as schema
 from .fs import CACHE_DIRECTORY
@@ -69,17 +69,14 @@ def main():
     db.query(schema.properties)
     if p.house != None:
         response = dl.home()
-        session = parse_session(response)
-        result = house(html_dir, db, session, p.house)
+        result = house(html_dir, db, response, p.house)
         generator = [] if result == None else [result]
     elif p.street != None:
         response = dl.home()
-        session = parse_session(response)
-        generator = street(session, p.street)
+        generator = street(response, p.street)
     elif p.streets:
         response = dl.home()
-        session = parse_session(response)
-        generator = chain(street(session, s) for s in p.streets)
+        generator = chain(street(response, s) for s in p.streets)
     else:
         generator = village(html_dir, db, p.parallel)
     for row in generator:
@@ -97,16 +94,15 @@ def village(html_dir, db, parallel):
     with open('/tmp/home.html', 'w') as fp:
         fp.write(response.text)
     _street_ids = street_ids(lxml.html.fromstring(response.text))
-    session = parse_session(response)
-    for future1 in jumble(functools.partial(street, session), _street_ids):
+    for future1 in jumble(functools.partial(street, response), _street_ids):
         session, _house_ids = future1.result()
-        for future2 in jumble(functools.partial(house, html_dir, db, session), _house_ids):
+        for future2 in jumble(functools.partial(house, html_dir, db, response), _house_ids):
             row = future2.result()
             if row != None:
                 yield row
 
-def street(session, street_id):
-    response = dl.street(session, street_id)
+def street(prev_response, street_id):
+    response = dl.street(street_id, prev_response = prev_response)
     if 'error has occurred' in response.text:
         with open('/tmp/street.html', 'w') as fp:
             fp.write(response.text)
@@ -114,8 +110,8 @@ def street(session, street_id):
                          (street_id, '/tmp/street.html'))
     return parse_session(response), house_ids(lxml.html.fromstring(response.text))
 
-def house(html_dir, db, session, house_id):
-    response = dl.house(session, house_id)
+def house(html_dir, db, prev_response, house_id):
+    response = dl.house(house_id, prev_response = prev_response)
     with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
         fp.write(response.text)
     bumpy_row = info(response.text)

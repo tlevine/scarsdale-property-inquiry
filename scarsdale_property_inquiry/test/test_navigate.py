@@ -5,7 +5,7 @@ from lxml.html import fromstring
 import nose.tools as n
 n.assert_dict_equal.__self__.maxDiff = None
 
-from ..navigate import street_ids, house_ids, parse_session, compose_postback
+from ..navigate import street_ids, house_ids, _compose_postback
 
 def test_parse_session():
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.p'), 'rb') as fp:
@@ -25,7 +25,7 @@ def test_compose_postback_home():
     event_target = 'blahBlah$$1234'
     event_argument = ''
     value = 'CROSSWAY FIELD'
-    observation = compose_postback(html, event_target, event_argument, value)
+    observation = _compose_postback(html, event_target, event_argument, value)
     with open('/tmp/a.json', 'w') as fp:
          json.dump(observation, fp, indent = 2, separators = (',', ':'))
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'postback_home.json'), 'r') as fp:
