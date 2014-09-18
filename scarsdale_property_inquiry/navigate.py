@@ -16,8 +16,8 @@ def house_ids(html):
     return [str(value.strip()) for value in html.xpath('id("dnn_ctr1398_ViewHelloWorld_lstboxAddresses")/option/@value')]
 
 def compose_postback(html, event_target, event_argument, selected_option):
-    data = {i.xpath('@name')[0]: i.xpath('@value')[0] \
-            for i in html.xpath('id("Form")//input')}
+    inputs = (i.attrib for i in html.xpath('id("Form")//input'))
+    data = {i['name']: i.get('value') for i in inputs}
     data['__EVENTTARGET'] = event_target
     data['__EVENTARGUMENT'] = event_argument
     selects = html.xpath('//select/@name')

@@ -3,6 +3,7 @@ import json
 
 from lxml.html import fromstring
 import nose.tools as n
+n.assert_dict_equal.__self__.maxDiff = None
 
 from ..navigate import street_ids, house_ids, parse_session, compose_postback
 
