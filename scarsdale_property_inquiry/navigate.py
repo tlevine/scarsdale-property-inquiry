@@ -1,3 +1,4 @@
+from urllib.parse import unquote
 from lxml.html import fromstring
 
 def parse_session(response):

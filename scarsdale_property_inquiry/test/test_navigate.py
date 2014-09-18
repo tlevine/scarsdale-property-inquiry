@@ -10,8 +10,11 @@ def test_parse_session():
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.p'), 'rb') as fp:
         _, response = pickle.load(fp)
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.json'), 'r') as fp:
-        exectation = json.load(fp)
-    n.assert_dict_equal(parse_session(response), expectation)
+        expectation = json.load(fp)
+    observed_cookies, *observed_other = parse_session(response)
+    expected_cookies, *expected_other = expectation
+    n.assert_dict_equal(dict(observed_cookies), expected_cookies)
+    n.assert_list_equal(observed_other, expected_other)
 
 def test_street_ids():
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.p'), 'rb') as fp:
