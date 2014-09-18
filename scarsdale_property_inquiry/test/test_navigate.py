@@ -10,6 +10,7 @@ from ..navigate import street_ids, house_ids, parse_session, compose_postback
 def test_parse_session():
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.p'), 'rb') as fp:
         _, response = pickle.load(fp)
+
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.json'), 'r') as fp:
         expectation = json.load(fp)
     observed_cookies, *observed_other = parse_session(response)
@@ -25,7 +26,10 @@ def test_compose_postback_home():
     event_argument = ''
     value = 'CROSSWAY FIELD'
     observation = compose_postback(html, event_target, event_argument, value)
-    expectation = {}
+    with open('/tmp/a.json', 'w') as fp:
+         json.dump(observation, fp, indent = 2, separators = (',', ':'))
+    with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'postback_home.json'), 'r') as fp:
+        expectation = json.load(fp)
     n.assert_dict_equal(observation, expectation)
 
 def test_street_ids():
