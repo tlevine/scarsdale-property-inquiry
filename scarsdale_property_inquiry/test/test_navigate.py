@@ -7,17 +7,6 @@ n.assert_dict_equal.__self__.maxDiff = None
 
 from ..navigate import street_ids, house_ids, _compose_postback
 
-def test_parse_session():
-    with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.p'), 'rb') as fp:
-        _, response = pickle.load(fp)
-
-    with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.json'), 'r') as fp:
-        expectation = json.load(fp)
-    observed_cookies, *observed_other = parse_session(response)
-    expected_cookies, *expected_other = expectation
-    n.assert_dict_equal(dict(observed_cookies), expected_cookies)
-    n.assert_list_equal(observed_other, expected_other)
-
 def test_compose_postback():
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.html'), 'r') as fp:
         raw = fp.read()
@@ -25,7 +14,7 @@ def test_compose_postback():
     event_target = 'blahBlah$$1234'
     event_argument = ''
     value = 'CROSSWAY FIELD'
-    observation = _compose_postback(html, event_target, event_argument, value)
+    observation = _compose_postback(event_target, event_argument, html, value)
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'compose_postback.json'), 'r') as fp:
         expectation = json.load(fp)
     n.assert_dict_equal(observation, expectation)
