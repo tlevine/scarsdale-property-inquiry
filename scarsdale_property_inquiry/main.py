@@ -105,6 +105,11 @@ def village(html_dir, db, parallel):
 
 def street(session, street_id):
     response = dl.street(session, street_id)
+    if 'error has occurred' in response.text:
+        with open('/tmp/street.html', 'w') as fp:
+            fp.write(response.text)
+        raise ValueError('There is an error in the response for %s; see %s.' % \
+                         (street_id, '/tmp/street.html'))
     return parse_session(response), house_ids(lxml.html.fromstring(response.text))
 
 def house(html_dir, db, session, house_id):
