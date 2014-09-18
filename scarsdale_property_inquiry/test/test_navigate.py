@@ -18,7 +18,7 @@ def test_parse_session():
     n.assert_dict_equal(dict(observed_cookies), expected_cookies)
     n.assert_list_equal(observed_other, expected_other)
 
-def test_compose_postback_home():
+def test_compose_postback():
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.html'), 'r') as fp:
         raw = fp.read()
     html = fromstring(raw)
@@ -26,9 +26,7 @@ def test_compose_postback_home():
     event_argument = ''
     value = 'CROSSWAY FIELD'
     observation = _compose_postback(html, event_target, event_argument, value)
-    with open('/tmp/a.json', 'w') as fp:
-         json.dump(observation, fp, indent = 2, separators = (',', ':'))
-    with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'postback_home.json'), 'r') as fp:
+    with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'compose_postback.json'), 'r') as fp:
         expectation = json.load(fp)
     n.assert_dict_equal(observation, expectation)
 
