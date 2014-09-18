@@ -32,6 +32,7 @@ def test_house_data():
         '__EVENTARGUMENT': '',
         '__LASTFOCUS': '',
         '__VIEWSTATE': 'gobbldygook',
+        '__VIEWSTATEGENERATOR': 'CA0B0334',
         '__EVENTVALIDATION': 'other gobbldygook',
         'dnn$SEARCH1$Search': 'SiteRadioButton',
         'dnn$SEARCH1$txtSearch': '',
@@ -39,7 +40,7 @@ def test_house_data():
         'dnn$dnnSEARCH$Search': 'SiteRadioButton',
         'dnn$dnnSEARCH$txtSearch': '',
         'ScrollTop': 73, # how far the page is scrolled
-        '__dnnVariable': '{"__scdoff":"1"}',
+        '__dnnVariable': '{"__scdoff":"1","__dnn_pageload":"__dnn_setScrollTop();"}',
     }
     n.assert_dict_equal(dict(observed), expected)
 
