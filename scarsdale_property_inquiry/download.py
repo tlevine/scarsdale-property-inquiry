@@ -7,12 +7,12 @@ from randua import generate as ua
 from lxml.html import fromstring
 
 from .fs import CACHE_DIRECTORY as C
-from .navigate import house_postback, street_postback
+from .navigate import house_postback, street_postback, url, headers
 
 def home():
     @cache(os.path.join(C))
     def f(key):
-        return requests.get(p.url(), headers = p.headers(ua()))
+        return requests.get(url(), headers = headers(ua()))
     return f('home')
 
 @cache(os.path.join(C))
@@ -26,8 +26,8 @@ def _post(section_name, _id, prev_response = None):
 
     html = fromstring(prev_response.text)
     data = data_func(html, _id)
-    files = [(key, ('', str(value))) for key, value in data]
-    return requests.post(p.url(), headers = p.headers(ua()),
+    files = [(key, ('', str(value))) for key, value in data.items()]
+    return requests.post(url(), headers = headers(ua()),
                          files = files, cookies = prev_response.cookies)
 
 street = functools.partial(_post, 'street')

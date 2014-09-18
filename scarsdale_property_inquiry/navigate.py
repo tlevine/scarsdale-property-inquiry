@@ -29,11 +29,15 @@ def _compose_postback(event_target, event_argument, html, selected_option):
 
     inputs = (i.attrib for i in html.xpath('id("Form")//input'))
     data.update({i['name']: i.get('value') for i in inputs})
+
+    publickeytoken = unquote(html.xpath('//script[contains(@src, "PublicKeyToken")]/@src')[0].split('PublicKeyToken=')[-1])
+
     data.update({
         '__EVENTTARGET': event_target,
         '__EVENTARGUMENT': event_argument,
         'ScriptManager_TSM': ';;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=' + publickeytoken,
     })
+
     return data
 
 house_postback = partial(_compose_postback,
