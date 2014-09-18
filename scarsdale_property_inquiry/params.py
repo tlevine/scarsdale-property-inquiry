@@ -12,7 +12,8 @@ def headers(user_agent):
         'Content-Encoding': 'gzip',
     }
 
-def _data(publickeytoken, viewstate, eventvalidation, eventtarget, value):
+def _data(publickeytoken, viewstate, eventvalidation, eventtarget, value,
+          __dnnVariable = '{"__scdoff":"1"}'):
     return [
         ('StylesheetManager_TSSM', ''),
         ('ScriptManager_TSM', ';;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=' + publickeytoken),
@@ -20,6 +21,7 @@ def _data(publickeytoken, viewstate, eventvalidation, eventtarget, value):
         ('__EVENTARGUMENT', ''),
         ('__LASTFOCUS', ''),
         ('__VIEWSTATE', viewstate),
+        ('__VIEWSTATEGENERATOR', 'CA0B0334'),
         ('__EVENTVALIDATION', eventvalidation),
         ('dnn$SEARCH1$Search', 'SiteRadioButton'),
         ('dnn$SEARCH1$txtSearch', ''),
@@ -27,13 +29,15 @@ def _data(publickeytoken, viewstate, eventvalidation, eventtarget, value):
         ('dnn$dnnSEARCH$Search', 'SiteRadioButton'),
         ('dnn$dnnSEARCH$txtSearch', ''),
         ('ScrollTop', 73), # how far the page is scrolled
-        ('__dnnVariable', '{"__scdoff":"1"}'),
+        ('__dnnVariable', __dnnVariable),
     ]
 
 def house_data(publickeytoken, viewstate, eventvalidation, house_id):
-#   eventtarget = 'dnn$ctr1398$ViewHelloWorld$lstboxAddresses'
-    eventtarget = 'dnn$ctr1398$ViewHelloWorld$txtProperty'
-    result = _data(publickeytoken, viewstate, eventvalidation, eventtarget, house_id)
+    eventtarget = 'dnn$ctr1398$ViewHelloWorld$lstboxAddresses'
+#   eventtarget = 'dnn$ctr1398$ViewHelloWorld$txtProperty'
+    __dnnVariable = '{"__scdoff":"1","__dnn_pageload":"__dnn_setScrollTop();"}'
+    result = _data(publickeytoken, viewstate, eventvalidation, eventtarget, house_id,
+                   __dnnVariable = __dnnVariable)
     return result
 
 def street_data(publickeytoken, viewstate, eventvalidation, street_id):
