@@ -4,7 +4,7 @@ import lxml.html
 import nose.tools as n
 
 import scarsdale_property_inquiry.assessment as read
-import scarsdale_property_inquiry.test.fixtures.assessment as fixtures
+import scarsdale_property_inquiry.test.fixtures.read as fixtures
 
 def check(function_name, expected):
     if isinstance(expected, list):
