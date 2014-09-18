@@ -18,7 +18,7 @@ def test_data():
         'dnn$ctr1398$ViewHelloWorld$lstboxAddresses': '05.04.43',
         'dnn$dnnSEARCH$Search': 'SiteRadioButton',
         'dnn$dnnSEARCH$txtSearch': '',
-        'ScrollTop': 228, # how far the page is scrolled
+        'ScrollTop': 73, # how far the page is scrolled
         '__dnnVariable': '{"__scdoff":"1"}',
     }
     n.assert_dict_equal(dict(observed), expected)
@@ -38,7 +38,7 @@ def test_house_data():
         'dnn$ctr1398$ViewHelloWorld$lstboxAddresses': '05.04.43',
         'dnn$dnnSEARCH$Search': 'SiteRadioButton',
         'dnn$dnnSEARCH$txtSearch': '',
-        'ScrollTop': 228, # how far the page is scrolled
+        'ScrollTop': 73, # how far the page is scrolled
         '__dnnVariable': '{"__scdoff":"1"}',
     }
     n.assert_dict_equal(dict(observed), expected)
@@ -59,7 +59,7 @@ def test_street_data():
         'dnn$dnnSEARCH$Search': 'SiteRadioButton',
         'dnn$ctr1398$ViewHelloWorld$txtProperty': '',
         'dnn$dnnSEARCH$txtSearch': '',
-        'ScrollTop': 228, # how far the page is scrolled
+        'ScrollTop': 73, # how far the page is scrolled
         '__dnnVariable': '{"__scdoff":"1"}',
     }
     n.assert_dict_equal(dict(observed), expected)
