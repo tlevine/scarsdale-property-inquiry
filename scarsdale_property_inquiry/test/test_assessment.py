@@ -24,6 +24,7 @@ TESTCASES = [
     ('permits', []),
 ]
 
+@n.nottest
 def test_sections():
     for section, expectation in TESTCASES:
         yield check, section, expectation
