@@ -9,7 +9,8 @@ import dataset
 import lxml.html
 
 import scarsdale_property_inquiry.download as dl
-import scarsdale_property_inquiry.read as read
+from .navigate import parse_session, street_ids, house_ids
+from .assessment import info, flatten 
 import scarsdale_property_inquiry.schema as schema
 from .fs import CACHE_DIRECTORY
 
@@ -68,16 +69,16 @@ def main():
     db.query(schema.properties)
     if p.house != None:
         response = dl.home()
-        session = dl.parse_session(response)
+        session = parse_session(response)
         result = house(html_dir, db, session, p.house)
         generator = [] if result == None else [result]
     elif p.street != None:
         response = dl.home()
-        session = dl.parse_session(response)
+        session = parse_session(response)
         generator = street(session, p.street)
     elif p.streets:
         response = dl.home()
-        session = dl.parse_session(response)
+        session = parse_session(response)
         generator = chain(street(session, s) for s in p.streets)
     else:
         generator = village(html_dir, db, p.parallel)
@@ -93,31 +94,31 @@ def village(html_dir, db, parallel):
         jumble = lambda f, xs: (Future(lambda: f(x)) for x in xs)
 
     response = dl.home()
-    street_ids = dl.street_ids(lxml.html.fromstring(response.text))
-    session = dl.parse_session(response)
-    for future1 in jumble(functools.partial(street, session), street_ids):
-        session, house_ids = future1.result()
-        for future2 in jumble(functools.partial(house, html_dir, db, session), house_ids):
+    _street_ids = street_ids(lxml.html.fromstring(response.text))
+    session = parse_session(response)
+    for future1 in jumble(functools.partial(street, session), _street_ids):
+        session, _house_ids = future1.result()
+        for future2 in jumble(functools.partial(house, html_dir, db, session), _house_ids):
             row = future2.result()
             if row != None:
                 yield row
 
 def street(session, street_id):
     response = dl.street(session, street_id)
-    return dl.parse_session(response), dl.house_ids(lxml.html.fromstring(response.text))
+    return parse_session(response), house_ids(lxml.html.fromstring(response.text))
 
 def house(html_dir, db, session, house_id):
     response = dl.house(session, house_id)
     with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
         fp.write(response.text)
-    bumpy_row = read.info(response.text)
+    bumpy_row = info(response.text)
     if bumpy_row != None:
         excemptions = bumpy_row.get('assessment_information', {}).get('excemptions', [])
         if excemptions != []:
             for excemption in excemptions:
                 excemption['property_number'] = bumpy_row['property_information']['Property Number']
                 db['excemptions'].upsert(excemption, ['property_number'])
-        flat_row = read.flatten(bumpy_row)
+        flat_row = flatten(bumpy_row)
         if flat_row != None and 'property_number' in flat_row:
             if '' in flat_row:
                 del(flat_row[''])
