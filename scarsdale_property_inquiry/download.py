@@ -4,9 +4,10 @@ import os
 from picklecache import cache
 import requests
 from randua import generate as ua
+from lxml.html import fromstring
 
 from .fs import CACHE_DIRECTORY as C
-import scarsdale_property_inquiry.params as p
+from .navigate import house_postback, street_postback
 
 def home():
     @cache(os.path.join(C))
@@ -14,22 +15,20 @@ def home():
         return requests.get(p.url(), headers = p.headers(ua()))
     return f('home')
 
-def _post(section_name, data_func, _id, session = None):
-    if session == None:
-        raise TypeError('Session must be defined.')
-    cookies, publickeytoken, viewstate, eventvalidation = session
-    data = data_func(publickeytoken, viewstate, eventvalidation, _id)
+@cache(os.path.join(C))
+def _post(section_name, _id, prev_response = None):
+    data_func = {
+        'house': house_postback,
+        'street': street_postback,
+    }[section_name]
+    if prev_response == None:
+        raise TypeError('prev_response must be defined.')
+
+    html = fromstring(prev_response.text)
+    data = data_func(html, _id)
     files = [(key, ('', str(value))) for key, value in data]
-    return requests.post(p.url(), headers = p.headers(ua()), files = files, cookies = cookies)
+    return requests.post(p.url(), headers = p.headers(ua()),
+                         files = files, cookies = prev_response.cookies)
 
-def _street_house(street_house, session, _id):
-    args = {
-        'street': ('street', p.street_data),
-        'house': ('house', p.house_data),
-    }[street_house]
-    directory = '~/.scarsdale-property-inquiry/' + args[0]
-    f = cache(directory)(functools.partial(_post, *args))
-    return f(_id, session = session)
-
-street = functools.partial(_street_house, 'street')
-house = functools.partial(_street_house, 'house')
+street = functools.partial(_post, 'street')
+house = functools.partial(_post, 'house')
