@@ -94,6 +94,8 @@ def village(html_dir, db, parallel):
         jumble = lambda f, xs: (Future(lambda: f(x)) for x in xs)
 
     response = dl.home()
+    with open('/tmp/home.html', 'w') as fp:
+        fp.write(response.text)
     _street_ids = street_ids(lxml.html.fromstring(response.text))
     session = parse_session(response)
     for future1 in jumble(functools.partial(street, session), _street_ids):
