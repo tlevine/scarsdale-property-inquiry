@@ -4,7 +4,7 @@ import json
 from lxml.html import fromstring
 import nose.tools as n
 
-from ..navigate import street_ids, house_ids, parse_session
+from ..navigate import street_ids, house_ids, parse_session, compose_postback
 
 def test_parse_session():
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.p'), 'rb') as fp:
@@ -15,6 +15,17 @@ def test_parse_session():
     expected_cookies, *expected_other = expectation
     n.assert_dict_equal(dict(observed_cookies), expected_cookies)
     n.assert_list_equal(observed_other, expected_other)
+
+def test_compose_postback_home():
+    with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.html'), 'r') as fp:
+        raw = fp.read()
+    html = fromstring(raw)
+    event_target = 'blahBlah$$1234'
+    event_argument = ''
+    value = 'CROSSWAY FIELD'
+    observation = compose_postback(html, event_target, event_argument, value)
+    expectation = {}
+    n.assert_dict_equal(observation, expectation)
 
 def test_street_ids():
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.p'), 'rb') as fp:

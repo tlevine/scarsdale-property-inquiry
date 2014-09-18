@@ -14,3 +14,14 @@ def street_ids(html):
 
 def house_ids(html):
     return [str(value.strip()) for value in html.xpath('id("dnn_ctr1398_ViewHelloWorld_lstboxAddresses")/option/@value')]
+
+def compose_postback(html, event_target, event_argument, selected_option):
+    data = {i.xpath('@name')[0]: i.xpath('@value')[0] \
+            for i in html.xpath('id("Form")//input')}
+    data['__EVENTTARGET'] = event_target
+    data['__EVENTARGUMENT'] = event_argument
+    selects = html.xpath('//select/@name')
+    if len(selects) != 1:
+        raise NotImplementedError('compose_postback expects exactly one select')
+    data[selects[0]] = selected_option
+    return data
