@@ -37,7 +37,7 @@ def _post(section_name, _id, prev_response = None):
     if prev_response == None:
         raise TypeError('prev_response must be defined.')
     args, kwargs = _post_args(section_name, _id, prev_response)
-    return requests.post(*args, **kwargs(
+    return requests.post(*args, **kwargs)
 
 street = functools.partial(_post, 'street')
 house = functools.partial(_post, 'house')
