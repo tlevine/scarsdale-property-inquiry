@@ -95,8 +95,8 @@ def village(html_dir, db, parallel):
         fp.write(response.text)
     _street_ids = street_ids(lxml.html.fromstring(response.text))
     for future1 in jumble(functools.partial(street, response), _street_ids):
-        session, _house_ids = future1.result()
-        for future2 in jumble(functools.partial(house, html_dir, db, response), _house_ids):
+        response1, _house_ids = future1.result()
+        for future2 in jumble(functools.partial(house, html_dir, db, response1), _house_ids):
             row = future2.result()
             if row != None:
                 yield row
@@ -108,10 +108,17 @@ def street(prev_response, street_id):
             fp.write(response.text)
         raise ValueError('There is an error in the response for %s; see %s.' % \
                          (street_id, '/tmp/street.html'))
-    return parse_session(response), house_ids(lxml.html.fromstring(response.text))
+    return response, house_ids(lxml.html.fromstring(response.text))
 
 def house(html_dir, db, prev_response, house_id):
     response = dl.house(house_id, prev_response = prev_response)
+
+    if 'error has occurred' in response.text:
+        with open('/tmp/house.html', 'w') as fp:
+            fp.write(response.text)
+        raise ValueError('There is an error in the response for %s; see %s.' % \
+                         (house_id, '/tmp/house.html'))
+
     with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
         fp.write(response.text)
     bumpy_row = info(response.text)
