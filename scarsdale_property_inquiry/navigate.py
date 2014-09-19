@@ -37,6 +37,7 @@ def _compose_postback(event_target, event_argument, html, value):
         'ScriptManager_TSM': ';;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=' + publickeytoken,
     })
 
+    data['ScrollTop'] = '228'
     data[event_target] = value
     return data
 
