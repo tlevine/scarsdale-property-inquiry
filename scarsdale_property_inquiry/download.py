@@ -15,7 +15,7 @@ def home():
     def f(key):
         return requests.get(url(), headers = headers(ua(), {}),
                             allow_redirects = False)
-    return f(datetime.datetime.now().isoformat())
+    return f(datetime.date.today().isoformat())
 
 def _post_args(section_name, _id, prev_response, user_agent = ua()):
     data_func = {
