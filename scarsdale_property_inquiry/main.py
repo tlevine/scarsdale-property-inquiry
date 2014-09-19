@@ -69,18 +69,21 @@ def main():
     db.query(schema.properties)
     home_response = dl.home()
     if p.house != None:
-        result = house(html_dir, db, home_response, p.house)
+        result = house(html_dir, home_response, p.house)
         generator = [] if result == None else [result]
     elif p.street != None:
         generator = street(home_response, p.street)
     elif p.streets:
         generator = chain(street(home_response, s) for s in p.streets)
     else:
-        generator = village(html_dir, db, p.parallel)
-    for row in generator:
-        stdout.write(json.dumps(row) + '\n')
+        generator = village(html_dir, home_response, p.parallel)
+    for response in generator:
+        row = flatten_house(response)
+        if row != None:
+            relational_house(db, response)
+            stdout.write(json.dumps(row) + '\n')
 
-def village(html_dir, db, parallel):
+def village(html_dir, home_response, parallel):
     if parallel:
         from jumble import jumble
     else:
@@ -88,17 +91,15 @@ def village(html_dir, db, parallel):
         Future = namedtuple('Future', ['result'])
         jumble = lambda f, xs: (Future(lambda: f(x)) for x in xs)
 
-    home_response = dl.home()
     _street_ids = street_ids(lxml.html.fromstring(home_response.text))
     for street_future in jumble(functools.partial(street, home_response), _street_ids):
         street_response, _house_ids = street_future.result()
-        for house_future in jumble(functools.partial(house, html_dir, db, dl.home()), set(_house_ids) - erring_houses):
-            row = house_future.result()
-            if row != None:
-                yield row
+        for house_future in jumble(functools.partial(house, html_dir, home_response), set(_house_ids) - erring_houses):
+            yield house_future.result()
 
 erring_houses = {
     '02.04.5',
+    '09.05.15.16',
 }
 
 def street(prev_response, street_id):
@@ -110,7 +111,7 @@ def street(prev_response, street_id):
                          (street_id, '/tmp/street.html'))
     return response, house_ids(lxml.html.fromstring(response.text))
 
-def house(html_dir, db, prev_response, house_id):
+def house(html_dir, prev_response, house_id):
     response = dl.house(house_id, prev_response = prev_response)
 
     if response.status_code != 200 or 'error has occurred' in response.text:
@@ -118,19 +119,30 @@ def house(html_dir, db, prev_response, house_id):
             fp.write(response.text)
         raise ValueError('There is an error in the response for %s; see %s.' % \
                          (house_id, '/tmp/house.html'))
-
     with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
         fp.write(response.text)
+    return response
+
+def flatten_house(response):
     bumpy_row = info(response.text)
     if bumpy_row != None:
         excemptions = bumpy_row.get('assessment_information', {}).get('excemptions', [])
-        if excemptions != []:
-            for excemption in excemptions:
-                excemption['property_number'] = bumpy_row['property_information']['Property Number']
-                db['excemptions'].upsert(excemption, ['property_number'])
         flat_row = flatten(bumpy_row)
         if flat_row != None and 'property_number' in flat_row:
             if '' in flat_row:
                 del(flat_row[''])
-            db['properties'].upsert(flat_row, ['property_number'])
         return flat_row
+
+def relational_house(db, response):
+    bumpy_row = info(response.text)
+    if bumpy_row != None:
+        excemptions = bumpy_row.get('assessment_information', {}).get('excemptions', [])
+        flat_row = flatten(bumpy_row)
+        if excemptions != []:
+            for excemption in excemptions:
+                excemption['property_number'] = bumpy_row['property_information']['Property Number']
+                db['excemptions'].upsert(excemption, ['property_number'])
+        if flat_row != None and 'property_number' in flat_row:
+            if '' in flat_row:
+                del(flat_row[''])
+            db['properties'].upsert(flat_row, ['property_number'])
