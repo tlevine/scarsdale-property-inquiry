@@ -18,12 +18,14 @@ def test_post_street():
         'headers': [
             ('Accept-Language', 'en-US,en;q=0.5'),
             ('Referer', 'http://www.scarsdale.com/Home/Departments/InformationTechnology/PropertyInquiry.aspx'),
-            ('Accept-Encoding', 'gzip, deflate'),
+            ('Accept-Encoding', 'gzip,deflate,sdch'),
             ('User-Agent', 'a browser'),
             ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'),
             ('Cookie', '.ASPXANONYMOUS=9WEEbBUJ0AEkAAAAMmU1NWFkYzItMTQ3OC00ZTZkLWE3NzMtNGE5NTgyZWZmYjE10; 51D=3155378975999999999; ASP.NET_SessionId=shycdfv2hq2tvbrkzcgxkuzm; language=en-US'),
             ('Connection', 'keep-alive'),
             ('Content-Encoding', 'gzip'),
+            ('Host', 'www.scarsdale.com'),
+            ('Origin', 'http://www.scarsdale.com'),
         ],
         'files': [
             ('StylesheetManager_TSSM', ('', '')),
@@ -58,12 +60,14 @@ def test_post_house():
         'headers': [
             ('Accept-Language', 'en-US,en;q=0.5'),
             ('Referer', 'http://www.scarsdale.com/Home/Departments/InformationTechnology/PropertyInquiry.aspx'),
-            ('Accept-Encoding', 'gzip, deflate'),
+            ('Accept-Encoding', 'gzip,deflate,sdch'),
             ('User-Agent', 'a browser'),
             ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'),
             ('Cookie', '.ASPXANONYMOUS=9WEEbBUJ0AEkAAAAMmU1NWFkYzItMTQ3OC00ZTZkLWE3NzMtNGE5NTgyZWZmYjE10; 51D=3155378975999999999; ASP.NET_SessionId=shycdfv2hq2tvbrkzcgxkuzm; language=en-US'),
             ('Connection', 'keep-alive'),
             ('Content-Encoding', 'gzip'),
+            ('Host', 'www.scarsdale.com'),
+            ('Origin', 'http://www.scarsdale.com'),
         ],
         'files': [
             ('StylesheetManager_TSSM', ('', '')),

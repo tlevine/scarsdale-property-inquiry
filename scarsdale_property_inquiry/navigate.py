@@ -1,11 +1,11 @@
 from functools import partial
 from urllib.parse import unquote
 
-def street_ids(html):
-    return [str(value.strip()) for value in html.xpath('id("dnn_ctr1398_ViewHelloWorld_lstboxStreets")/option/@value')]
+def _ids(name, html):
+    return map(str, html.xpath('//select@name="%s"/option/@value' % name))
 
-def house_ids(html):
-    return [str(value.strip()) for value in html.xpath('id("dnn_ctr1398_ViewHelloWorld_lstboxAddresses")/option/@value')]
+street_ids = partial(_ids, 'dnn$ctr1398$ViewHelloWorld$lstboxStreets')
+house_ids = partial(_ids, 'dnn$ctr1398$ViewHelloWorld$lstboxAddresses')
 
 def url():
     return 'http://www.scarsdale.com/Home/Departments/InformationTechnology/PropertyInquiry.aspx'
