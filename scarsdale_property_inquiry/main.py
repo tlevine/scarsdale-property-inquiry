@@ -126,11 +126,9 @@ def house(html_dir, prev_response, house_id):
 def flatten_house(response):
     bumpy_row = info(response.text)
     if bumpy_row != None:
-        excemptions = bumpy_row.get('assessment_information', {}).get('excemptions', [])
         flat_row = flatten(bumpy_row)
-        if flat_row != None and 'property_number' in flat_row:
-            if '' in flat_row:
-                del(flat_row[''])
+        if flat_row != None and '' in flat_row:
+            del(flat_row[''])
         return flat_row
 
 def relational_house(db, response):
