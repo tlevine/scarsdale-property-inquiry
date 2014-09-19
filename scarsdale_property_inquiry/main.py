@@ -103,7 +103,7 @@ def village(html_dir, db, parallel):
 
 def street(prev_response, street_id):
     response = dl.street(street_id, prev_response = prev_response)
-    if 'error has occurred' in response.text:
+    if response.status_code != 200 or 'error has occurred' in response.text:
         with open('/tmp/street.html', 'w') as fp:
             fp.write(response.text)
         raise ValueError('There is an error in the response for %s; see %s.' % \
@@ -113,7 +113,7 @@ def street(prev_response, street_id):
 def house(html_dir, db, prev_response, house_id):
     response = dl.house(house_id, prev_response = prev_response)
 
-    if 'error has occurred' in response.text:
+    if response.status_code != 200 or 'error has occurred' in response.text:
         with open('/tmp/house.html', 'w') as fp:
             fp.write(response.text)
         raise ValueError('There is an error in the response for %s; see %s.' % \
