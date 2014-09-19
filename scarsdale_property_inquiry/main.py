@@ -67,22 +67,20 @@ def main():
 
     db = dataset.connect(p.database)
     db.query(schema.properties)
+    home_response = dl.home()
     if p.house != None:
-        response = dl.home()
-        result = house(html_dir, db, response, p.house)
+        result = house(html_dir, db, home_response, p.house)
         generator = [] if result == None else [result]
     elif p.street != None:
-        response = dl.home()
-        generator = street(response, p.street)
+        generator = street(home_response, p.street)
     elif p.streets:
-        response = dl.home()
-        generator = chain(street(response, s) for s in p.streets)
+        generator = chain(street(home_response, s) for s in p.streets)
     else:
-        generator = village(html_dir, db, p.parallel)
+        generator = village(html_dir, db, home_response, p.parallel)
     for row in generator:
         stdout.write(json.dumps(row) + '\n')
 
-def village(html_dir, db, parallel):
+def village(html_dir, db, home_response, parallel):
     if parallel:
         from jumble import jumble
     else:
@@ -90,14 +88,11 @@ def village(html_dir, db, parallel):
         Future = namedtuple('Future', ['result'])
         jumble = lambda f, xs: (Future(lambda: f(x)) for x in xs)
 
-    response = dl.home()
-    with open('/tmp/home.html', 'w') as fp:
-        fp.write(response.text)
-    _street_ids = street_ids(lxml.html.fromstring(response.text))
-    for future1 in jumble(functools.partial(street, response), _street_ids):
-        response1, _house_ids = future1.result()
-        for future2 in jumble(functools.partial(house, html_dir, db, response1), _house_ids):
-            row = future2.result()
+    _street_ids = street_ids(lxml.html.fromstring(home_response.text))
+    for street_future in jumble(functools.partial(street, home_response), _street_ids):
+        street_response, _house_ids = street_future.result()
+        for house_future in jumble(functools.partial(house, html_dir, db, home_response), _house_ids):
+            row = house_future.result()
             if row != None:
                 yield row
 
