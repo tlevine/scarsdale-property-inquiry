@@ -92,10 +92,14 @@ def village(html_dir, db, parallel):
     _street_ids = street_ids(lxml.html.fromstring(home_response.text))
     for street_future in jumble(functools.partial(street, home_response), _street_ids):
         street_response, _house_ids = street_future.result()
-        for house_future in jumble(functools.partial(house, html_dir, db, dl.home()), _house_ids):
+        for house_future in jumble(functools.partial(house, html_dir, db, dl.home()), set(_house_ids) - erring_houses):
             row = house_future.result()
             if row != None:
                 yield row
+
+erring_houses = {
+    '02.04.5',
+}
 
 def street(prev_response, street_id):
     response = dl.street(street_id, prev_response = prev_response)
