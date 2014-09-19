@@ -14,7 +14,7 @@ def test_compose_postback():
     event_target = 'blahBlah$$1234'
     event_argument = ''
     value = 'CROSSWAY FIELD'
-    observation = _compose_postback(event_target, event_argument, html, value)
+    observation = _compose_postback(event_target, event_argument, event_target, html, value)
     with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'compose_postback.json'), 'r') as fp:
         expectation = json.load(fp)
     n.assert_dict_equal(observation, expectation)
