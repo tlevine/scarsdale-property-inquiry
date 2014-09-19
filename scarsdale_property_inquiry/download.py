@@ -12,7 +12,8 @@ from .navigate import house_postback, street_postback, url, headers
 def home():
     @cache(os.path.join(C))
     def f(key):
-        return requests.get(url(), headers = headers(ua(), {}))
+        return requests.get(url(), headers = headers(ua(), {}),
+                            allow_redirects = False)
     return f('home')
 
 def _post_args(section_name, _id, prev_response, user_agent = ua()):
@@ -37,6 +38,7 @@ def _post(section_name, _id, prev_response = None):
     if prev_response == None:
         raise TypeError('prev_response must be defined.')
     args, kwargs = _post_args(section_name, _id, prev_response)
+    kwargs['allow_redirects'] = False
     return requests.post(*args, **kwargs)
 
 street = functools.partial(_post, 'street')
