@@ -18,7 +18,6 @@ def headers(user_agent, cookies):
         'Accept-Language': 'en-US,en;q=0.5',
         'Connection': 'keep-alive',
         'Cookie': cookie,
-        'Content-Encoding': 'gzip',
         'Host': 'www.scarsdale.com',
         'Origin': 'http://www.scarsdale.com',
         'Referer': url(),
