@@ -2,7 +2,7 @@ from functools import partial
 from urllib.parse import unquote
 
 def _ids(name, html):
-    return map(str, html.xpath('//select@name="%s"/option/@value' % name))
+    return map(str, html.xpath('//select[@name="%s"]/option/@value' % name))
 
 street_ids = partial(_ids, 'dnn$ctr1398$ViewHelloWorld$lstboxStreets')
 house_ids = partial(_ids, 'dnn$ctr1398$ViewHelloWorld$lstboxAddresses')

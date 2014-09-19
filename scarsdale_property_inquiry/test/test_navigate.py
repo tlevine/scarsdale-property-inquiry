@@ -24,12 +24,10 @@ def test_street_ids():
         _, response = pickle.load(fp)
     html = fromstring(response.text)
     observed = street_ids(html)
-    n.assert_in('WINDSOR LA', observed)
+    n.assert_in('WINDSOR LA               ', list(observed))
 
-@n.nottest
 def test_house_ids():
-    with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'WALWORTH AVE'), 'rb') as fp:
-        response = pickle.load(fp)
-    html = fromstring(response.text)
+    with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'crossway.htm'), 'r') as fp:
+        html = fromstring(fp.read())
     observed = house_ids(html)
-    n.assert_in('6 WALWORTH AVE', observed)
+    n.assert_in('22.11.28', list(observed))
