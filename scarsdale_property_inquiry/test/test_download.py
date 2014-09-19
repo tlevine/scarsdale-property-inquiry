@@ -35,13 +35,8 @@ def test_post_args():
             ('__dnnVariable', ('', '`{`__scdoff`:`1`}')),
         ],
     }
-    import pprint
-    with open('/tmp/a', 'w') as fp:
-        fp.write(pprint.pformat(list(observed_kwargs['cookies'])))
-    with open('/tmp/b', 'w') as fp:
-        fp.write(pprint.pformat(observed_kwargs))
-    yield n.assert_tuple_equal, observed_args, expected_args
-    yield n.assert_list_equal, list(observed_kwargs.keys()), ['headers', 'files', 'cookies']
-    yield n.assert_list_equal, observed_kwargs['files'], expected_kwargs['files']
-    yield n.assert_list_equal, list(observed_kwargs['cookies']), expected_kwargs['cookies']
-    yield n.assert_list_equal, list(observed_kwargs['headers'].items()), expected_kwargs['headers']
+    n.assert_tuple_equal(observed_args, expected_args)
+    n.assert_list_equal(list(observed_kwargs.keys()), ['headers', 'files', 'cookies'])
+    n.assert_dict_equal(observed_kwargs['files'], dict(expected_kwargs['files']))
+    n.assert_dict_equal(dict(observed_kwargs['cookies']), dict(expected_kwargs['cookies']))
+    n.assert_dict_equal(observed_kwargs['headers'], dict(expected_kwargs['headers']))

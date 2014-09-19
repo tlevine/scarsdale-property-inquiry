@@ -23,7 +23,8 @@ def _post_args(section_name, _id, prev_response):
 
     html = fromstring(prev_response.text)
     data = data_func(html, _id)
-    files = [(key, ('', str(value))) for key, value in data.items()]
+    files = [(key, ('', '' if value == None else str(value))) \
+             for key, value in data.items()]
     args = url(),
     kwargs = {
         'headers': headers(ua()),
