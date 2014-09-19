@@ -14,13 +14,15 @@ def headers(user_agent, cookies):
     cookie = '; '.join(key + '=' + value for key, value in cookies.items())
     return {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Encoding': 'gzip, deflate',
+        'Accept-Encoding': 'gzip,deflate,sdch',
         'Accept-Language': 'en-US,en;q=0.5',
         'Connection': 'keep-alive',
-        'User-Agent': user_agent,
-        'Referer': url(),
         'Cookie': cookie,
         'Content-Encoding': 'gzip',
+        'Host': 'www.scarsdale.com',
+        'Origin': 'http://www.scarsdale.com',
+        'Referer': url(),
+        'User-Agent': user_agent,
     }
 
 def _compose_postback(event_target, event_argument, html, value):
