@@ -76,11 +76,11 @@ def main():
     elif p.streets:
         generator = chain(street(home_response, s) for s in p.streets)
     else:
-        generator = village(html_dir, db, home_response, p.parallel)
+        generator = village(html_dir, db, p.parallel)
     for row in generator:
         stdout.write(json.dumps(row) + '\n')
 
-def village(html_dir, db, home_response, parallel):
+def village(html_dir, db, parallel):
     if parallel:
         from jumble import jumble
     else:
@@ -88,10 +88,11 @@ def village(html_dir, db, home_response, parallel):
         Future = namedtuple('Future', ['result'])
         jumble = lambda f, xs: (Future(lambda: f(x)) for x in xs)
 
+    home_response = dl.home()
     _street_ids = street_ids(lxml.html.fromstring(home_response.text))
     for street_future in jumble(functools.partial(street, home_response), _street_ids):
         street_response, _house_ids = street_future.result()
-        for house_future in jumble(functools.partial(house, html_dir, db, home_response), _house_ids):
+        for house_future in jumble(functools.partial(house, html_dir, db, dl.home()), _house_ids):
             row = house_future.result()
             if row != None:
                 yield row
