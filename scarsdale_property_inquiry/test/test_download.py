@@ -12,7 +12,7 @@ with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.p
 def test_post_args():
     observed_args, observed_kwargs = _post_args('house', 'the house id', home)
 
-    expected_args = ('http://', )
+    expected_args = ('http://www.scarsdale.com/Home/Departments/InformationTechnology/PropertyInquiry.aspx', )
     expected_kwargs = {
         'headers': [
             ('Cookie', '.ASPXANONYMOUS=q2aPyk_yzwEkAAAAMTFjNDYzNmYtN2NhNi00MjU3LWI1YTgtMzBhODBkMWFlYWIz0; 51D=3155378975999999999; language=en-US; ASP.NET_SessionId=lnbip255yivkay55zn3ogz55'),
@@ -36,7 +36,7 @@ def test_post_args():
         ],
     }
     n.assert_tuple_equal(observed_args, expected_args)
-    n.assert_list_equal(list(observed_kwargs.keys()), ['headers', 'files', 'cookies'])
-    n.assert_dict_equal(observed_kwargs['files'], dict(expected_kwargs['files']))
+    n.assert_set_equal(set(observed_kwargs.keys()), {'headers', 'files', 'cookies'})
+    n.assert_dict_equal(dict(observed_kwargs['files']), dict(expected_kwargs['files']))
     n.assert_dict_equal(dict(observed_kwargs['cookies']), dict(expected_kwargs['cookies']))
     n.assert_dict_equal(observed_kwargs['headers'], dict(expected_kwargs['headers']))
