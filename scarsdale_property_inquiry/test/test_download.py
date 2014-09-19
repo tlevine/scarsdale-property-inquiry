@@ -10,12 +10,20 @@ with open(os.path.join('scarsdale_property_inquiry', 'test', 'fixtures', 'home.p
     _, home = pickle.load(fp)
 
 def test_post_args():
-    observed_args, observed_kwargs = _post_args('house', 'the house id', home)
+    observed_args, observed_kwargs = _post_args('house', 'the house id', home,
+                                                user_agent = 'a browser')
 
     expected_args = ('http://www.scarsdale.com/Home/Departments/InformationTechnology/PropertyInquiry.aspx', )
     expected_kwargs = {
         'headers': [
-            ('Cookie', '.ASPXANONYMOUS=q2aPyk_yzwEkAAAAMTFjNDYzNmYtN2NhNi00MjU3LWI1YTgtMzBhODBkMWFlYWIz0; 51D=3155378975999999999; language=en-US; ASP.NET_SessionId=lnbip255yivkay55zn3ogz55'),
+            ('Accept-Language', 'en-US,en;q=0.5'),
+            ('Referer', 'http://www.scarsdale.com/Home/Departments/InformationTechnology/PropertyInquiry.aspx'),
+            ('Accept-Encoding', 'gzip, deflate'),
+            ('User-Agent', 'a browser'),
+            ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'),
+            ('Cookie', '.ASPXANONYMOUS=9WEEbBUJ0AEkAAAAMmU1NWFkYzItMTQ3OC00ZTZkLWE3NzMtNGE5NTgyZWZmYjE10; 51D=3155378975999999999; ASP.NET_SessionId=shycdfv2hq2tvbrkzcgxkuzm; language=en-US'),
+            ('Connection', 'keep-alive'),
+            ('Content-Encoding', 'gzip'),
         ],
         'files': [
             ('StylesheetManager_TSSM', ('', '')),
@@ -36,7 +44,6 @@ def test_post_args():
         ],
     }
     n.assert_tuple_equal(observed_args, expected_args)
-    n.assert_set_equal(set(observed_kwargs.keys()), {'headers', 'files', 'cookies'})
+    n.assert_set_equal(set(observed_kwargs.keys()), {'headers', 'files'})
     n.assert_dict_equal(dict(observed_kwargs['files']), dict(expected_kwargs['files']))
-    n.assert_dict_equal(dict(observed_kwargs['cookies']), dict(expected_kwargs['cookies']))
     n.assert_dict_equal(observed_kwargs['headers'], dict(expected_kwargs['headers']))

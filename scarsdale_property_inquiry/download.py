@@ -15,7 +15,7 @@ def home():
         return requests.get(url(), headers = headers(ua()))
     return f('home')
 
-def _post_args(section_name, _id, prev_response):
+def _post_args(section_name, _id, prev_response, user_agent = ua()):
     data_func = {
         'house': house_postback,
         'street': street_postback,
@@ -27,9 +27,8 @@ def _post_args(section_name, _id, prev_response):
              for key, value in data.items()]
     args = url(),
     kwargs = {
-        'headers': headers(ua()),
+        'headers': headers(user_agent, prev_response.cookies),
         'files': files,
-        'cookies': prev_response.cookies
     }
     return args, kwargs
 

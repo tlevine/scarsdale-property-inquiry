@@ -10,7 +10,8 @@ def house_ids(html):
 def url():
     return 'http://www.scarsdale.com/Home/Departments/InformationTechnology/PropertyInquiry.aspx'
 
-def headers(user_agent):
+def headers(user_agent, cookies):
+    cookie = '; '.join(key + '=' + value for key, value in cookies.items())
     return {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Accept-Encoding': 'gzip, deflate',
@@ -18,6 +19,7 @@ def headers(user_agent):
         'Connection': 'keep-alive',
         'User-Agent': user_agent,
         'Referer': url(),
+        'Cookie': cookie,
         'Content-Encoding': 'gzip',
     }
 
