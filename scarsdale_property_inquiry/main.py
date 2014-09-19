@@ -99,7 +99,12 @@ def village(html_dir, home_response, parallel):
 
 erring_houses = {
     '02.04.5',
+    '02.05.6',
+    '08.04.1',
     '09.05.15.16',
+    '09.18.1',
+    '23.02.53',
+    '24.01.63',
 }
 
 def street(prev_response, street_id):
@@ -117,8 +122,9 @@ def house(html_dir, prev_response, house_id):
     if response.status_code != 200 or 'error has occurred' in response.text:
         with open('/tmp/house.html', 'w') as fp:
             fp.write(response.text)
-        raise ValueError('There is an error in the response for %s; see %s.' % \
-                         (house_id, '/tmp/house.html'))
+    #   raise ValueError('There is an error in the response for %s; see %s.' % \
+    #                    (house_id, '/tmp/house.html'))
+        open('/tmp/erring', 'a').write(house_id + '\n')
     with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
         fp.write(response.text)
     return response
