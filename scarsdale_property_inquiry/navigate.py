@@ -21,8 +21,8 @@ def headers(user_agent):
         'Content-Encoding': 'gzip',
     }
 
-def _compose_postback(event_target, event_argument, name, html, value):
-    data = {name: value}
+def _compose_postback(event_target, event_argument, html, value):
+    data = {event_target: value}
 
     inputs = (i.attrib for i in html.xpath('id("Form")//input'))
     data.update({i['name']: i.get('value') for i in inputs})
@@ -38,8 +38,6 @@ def _compose_postback(event_target, event_argument, name, html, value):
     return data
 
 house_postback = partial(_compose_postback,
-    'dnn$ctr1398$ViewHelloWorld$txtProperty', '',
-    'dnn$ctr1398$ViewHelloWorld$lstboxAddresses')
+    'dnn$ctr1398$ViewHelloWorld$txtProperty', '')
 street_postback = partial(_compose_postback,
-    'dnn$ctr1398$ViewHelloWorld$lstboxStreets', '',
-    'dnn$ctr1398$ViewHelloWorld$lstboxStreets')
+    'dnn$ctr1398$ViewHelloWorld$lstboxStreets', '')
