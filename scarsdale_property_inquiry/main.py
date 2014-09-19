@@ -94,18 +94,8 @@ def village(html_dir, home_response, parallel):
     _street_ids = street_ids(lxml.html.fromstring(home_response.text))
     for street_future in jumble(functools.partial(street, home_response), _street_ids):
         street_response, _house_ids = street_future.result()
-        for house_future in jumble(functools.partial(house, html_dir, home_response), set(_house_ids) - erring_houses):
+        for house_future in jumble(functools.partial(house, html_dir, home_response), _house_ids):
             yield house_future.result()
-
-erring_houses = {
-    '02.04.5',
-    '02.05.6',
-    '08.04.1',
-    '09.05.15.16',
-    '09.18.1',
-    '23.02.53',
-    '24.01.63',
-}
 
 def street(prev_response, street_id):
     response = dl.street(street_id, prev_response = prev_response)
@@ -120,11 +110,8 @@ def house(html_dir, prev_response, house_id):
     response = dl.house(house_id, prev_response = prev_response)
 
     if response.status_code != 200 or 'error has occurred' in response.text:
-        with open('/tmp/house.html', 'w') as fp:
+        with open(os.path.join(html_dir, 'errors', house_id + '.html'), 'w') as fp:
             fp.write(response.text)
-    #   raise ValueError('There is an error in the response for %s; see %s.' % \
-    #                    (house_id, '/tmp/house.html'))
-        open('/tmp/erring', 'a').write(house_id + '\n')
     with open(os.path.join(html_dir, house_id + '.html'), 'w') as fp:
         fp.write(response.text)
     return response
