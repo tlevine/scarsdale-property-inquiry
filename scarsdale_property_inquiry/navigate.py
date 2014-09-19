@@ -22,7 +22,7 @@ def headers(user_agent):
     }
 
 def _compose_postback(event_target, event_argument, html, value):
-    data = {event_target: value}
+    data = {}
 
     inputs = (i.attrib for i in html.xpath('id("Form")//input'))
     data.update({i['name']: i.get('value') for i in inputs})
@@ -35,6 +35,7 @@ def _compose_postback(event_target, event_argument, html, value):
         'ScriptManager_TSM': ';;System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=' + publickeytoken,
     })
 
+    data[event_target] = value
     return data
 
 house_postback = partial(_compose_postback,
