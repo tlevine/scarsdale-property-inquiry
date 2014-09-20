@@ -94,16 +94,12 @@ def village(html_dir, home_response, parallel):
     _street_ids = street_ids(lxml.html.fromstring(home_response.text))
     for street_future in jumble(functools.partial(street, home_response), _street_ids):
         street_response, _house_ids = street_future.result()
-        for house_future in jumble(functools.partial(house, html_dir, home_response), _house_ids):
-            yield house_future.result()
+        if street_response.status_code != 200:
+            for house_future in jumble(functools.partial(house, html_dir, home_response), _house_ids):
+                yield house_future.result()
 
 def street(prev_response, street_id):
     response = dl.street(street_id, prev_response = prev_response)
-    if response.status_code != 200 or 'error has occurred' in response.text:
-        with open('/tmp/street.html', 'w') as fp:
-            fp.write(response.text)
-        raise ValueError('There is an error in the response for %s; see %s.' % \
-                         (street_id, '/tmp/street.html'))
     return response, house_ids(lxml.html.fromstring(response.text))
 
 def house(html_dir, prev_response, house_id):
