@@ -105,6 +105,8 @@ erring_houses = {
 def street(prev_response, street_id):
     response = dl.street(street_id, prev_response = prev_response)
     if response.status_code != 200 or 'error has occurred' in response.text:
+        if 'Object moved to' in response.text:
+            return response, []
         with open('/tmp/street.html', 'w') as fp:
             fp.write(response.text)
         raise ValueError('There is an error in the response for %s; see %s.' % \
