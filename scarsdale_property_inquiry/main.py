@@ -109,6 +109,7 @@ def street(prev_response, street_id):
     response = dl.street(street_id, prev_response = prev_response)
     if response.status_code != 200 or 'error has occurred' in response.text:
         if 'Object moved to' in response.text:
+            sys.stderr.write('Data for street %s are not available.\n' % street_id)
             return response, []
         with open('/tmp/street.html', 'w') as fp:
             fp.write(response.text)
@@ -121,6 +122,7 @@ def house(html_dir, prev_response, house_id):
 
     if response.status_code != 200 or 'error has occurred' in response.text:
         if 'Object moved to' in response.text:
+            sys.stderr.write('Data for house %s are not available.\n' % house_id)
             return None
         with open(os.path.join(html_dir, 'errors', house_id + '.html'), 'w') as fp:
             fp.write(response.text)
